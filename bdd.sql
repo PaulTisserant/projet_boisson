@@ -62,20 +62,7 @@ CREATE TABLE `hierarchyrelationships` (
 
 CREATE TABLE `ingredients` (
   `ingredient_id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `recipeingredients`
---
-
-CREATE TABLE `recipeingredients` (
-  `recipe_id` int(11) NOT NULL,
-  `ingredient_id` int(11) NOT NULL,
-  `quantity` varchar(50) DEFAULT NULL,
-  `unit` varchar(50) DEFAULT NULL
+  `nom` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -145,13 +132,6 @@ ALTER TABLE `ingredients`
   ADD PRIMARY KEY (`ingredient_id`);
 
 --
--- Index pour la table `recipeingredients`
---
-ALTER TABLE `recipeingredients`
-  ADD PRIMARY KEY (`recipe_id`,`ingredient_id`),
-  ADD KEY `ingredient_id` (`ingredient_id`);
-
---
 -- Index pour la table `recipes`
 --
 ALTER TABLE `recipes`
@@ -210,13 +190,6 @@ ALTER TABLE `hierarchyrelationships`
   ADD CONSTRAINT `hierarchyrelationships_ibfk_1` FOREIGN KEY (`parent_food_id`) REFERENCES `foodhierarchy` (`food_id`),
   ADD CONSTRAINT `hierarchyrelationships_ibfk_2` FOREIGN KEY (`child_food_id`) REFERENCES `foodhierarchy` (`food_id`);
 
---
--- Contraintes pour la table `recipeingredients`
---
-ALTER TABLE `recipeingredients`
-  ADD CONSTRAINT `recipeingredients_ibfk_1` FOREIGN KEY (`recipe_id`) REFERENCES `recipes` (`recipe_id`),
-  ADD CONSTRAINT `recipeingredients_ibfk_2` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`ingredient_id`);
-COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
