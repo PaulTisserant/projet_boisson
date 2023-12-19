@@ -20,6 +20,12 @@ $naissance = TRUE ;
 $motDePasse = TRUE ;
 $login = TRUE ;
 $telephone = TRUE ;
+$mdp_SizeError = FALSE ;
+$login_SizeError = FALSE ;
+$login_ExistError = FALSE ;
+
+$mdp_EqualsError = FALSE ;
+$mdp_UpperError = FALSE ;
 
 //Verification des donnees
 if($_POST['Submit']){
@@ -47,13 +53,10 @@ if($_POST['Submit']){
     if(isset($_POST['email'])){
         $mail = $_POST['email'] ;
         //Verification si l'utiliateur a remplis le champ Email
-        /*
-       if(strlen($mail) > 0 ){
-           if(filter_var($mail, FILTER_VALIDATE_EMAIL)){
-               $email = FALSE ;
-           }
+       if(preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i',$var_mail ))
+       {
+            $email = FALSE ;
        }
-       */
     }
     //Verif Telephone
     if(isset($_POST['telephone'])){
@@ -99,37 +102,76 @@ if($_POST['Submit']){
           $naissance=FALSE ;
         }
     }
+
+    //Verif Login
     if(isset($_POST['Login'])){
         $log = $_POST['Login'] ;
-        //Verification si l'utiliateur a remplis le champ Login
-        if(strlen($log) == 0 ){
-                $login = FALSE ; 
+        //Verification si l'utiliateur a remplis le champ Login avec au moins 5 caracteres
+        if(!preg_match('/.{5,}/',$log) ){
+                $login = FALSE ;
+                $login_SizeError = TRUE ;
+
+        }
+        //Verification si le login est disponible
+        try {
+            $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
+            
+            // Utilisation de requête préparée pour éviter les attaques par injection SQL
+            $sql = "SELECT user_id FROM users WHERE login = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$log]);
+            // Si une ligne est retournée, le login existe
+            if ($stmt->rowCount() > 0) {
+                $login= FALSE ;
+                $login_ExistError = TRUE ;
+            }
+        
+        } catch (PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
+        } finally {
+            $conn = null;
         }
     }    
+
+    //Verif Mot De Passe
     if(isset($_POST['MDP']) && isset($_POST['MDP_confirm'])){
         $log = $_POST['Login'] ;
         $mdp1 = $_POST['MDP'] ; 
         $mdp2 = $_POST['MDP_confirm'] ; 
-        //Verification si l'utiliateur a remplis le champ MDP
-        if(strlen($mdp1) == 0 ){
-                $motDePasse = FALSE ; 
+        //Verification si l'utiliateur a remplis le champ MDP avec au moins 8 caracteres
+        if(!preg_match('/.{8,}/',$mdp1)){
+                $motDePasse = FALSE ;
+                $mdp_SizeError = TRUE ; 
         }
-        else{
-            if(!($mdp1 === $mdp2)){
-                $motDePasse = FALSE ; 
-            }
+        elseif(!preg_match('/[A-Z]{1,}/',$mdp1)){
+            $mdp_UpperError = TRUE ;
+            $motDePasse = FALSE ;
         }
+        elseif(!($mdp1 === $mdp2)){
+                $motDePasse = FALSE ; 
+                $mdp_EqualsError = TRUE ; 
+        }
+    }
     }  
-}
 ?>
 
     <h1>Inscription</h1>
     <form style="align-content: center;"  method="post" action="#" >
-        <span <?php if(!$login){ echo 'style="color: red;"';} ?> ><strong> Login </strong> <?php if(!$login){ echo '<span style="color: red;font-size: 12px;"> (Erreur login)</span>';} ?>
+        <span <?php if(!$login){ echo 'style="color: red;"';} ?> ><strong> Login </strong> 
+        <?php 
+        if($login_SizeError){ echo '<span style="color: red;font-size: 12px;"> (Erreur le login doit faire au moins 5 caractères)</span>';}
+        elseif ($login_ExistError) echo '<span style="color: red;font-size: 12px;"> (Erreur le login existe déjà)</span>';
+        ?>
         <br>
         <input type="text" name="Login"  > </span>
         <br>
-        <span <?php if(!$motDePasse){ echo 'style="color: red;"';} ?>><strong>Mot de passe :</strong> <?php if(!$motDePasse){ echo '<span style="color: red;font-size: 12px;"> (Erreur Mot de passe)</span>';} ?>
+        <span <?php if(!$motDePasse){ echo 'style="color: red;"';} ?>><strong>Mot de passe :</strong> 
+        <?php 
+        if($mdp_SizeError == TRUE){ echo '<span style="color: red;font-size: 12px;"> (Erreur le mot de passe doit faire au moins 8 caractères)</span>';
+        }elseif ($mdp_UpperError == TRUE) {  echo '<span style="color: red;font-size: 12px;"> (Erreur le mot de passe doit avoir au moins 1 majuscule)</span>';
+        }elseif($mdp_EqualsError == TRUE){ echo '<span style="color: red;font-size: 12px;"> (Erreur lors de la confirmation du mot de passe)</span>';
+        } 
+        ?>
         <br> 
         <input type="password" name="MDP"   > </span>
         <br>
@@ -185,7 +227,7 @@ if($_POST['Submit']){
     </form>
 
 <?php  
-if($_POST['Submit']){  
+if($_POST['Submit']){
     if (($prenom==TRUE) && ($nom==TRUE)  && ($email==TRUE)  && $sexe==TRUE  && $ville==TRUE  && $codePostal==TRUE  && $adresse==TRUE  && $naissance==TRUE  && $motDePasse==TRUE  && $login==TRUE  && $telephone==TRUE ){
         $prenom = isset($_POST['Prenom']) ? $_POST['Prenom'] : null;
         $nom_bdd = isset($_POST['Nom']) ? $_POST['Nom'] : null;
@@ -205,7 +247,6 @@ if($_POST['Submit']){
             $stmt->execute([$login_bdd, $motDePasse_bdd, $nom_bdd, $prenom_bdd, $sexe_bdd, $email_bdd, $naissance_bdd, $adresse_bdd, $codePostal_bdd, $ville_bdd, $telephone_bdd]);
         } catch (PDOException $e) {
             echo "Erreur !: " . $e->getMessage() . "<br/>";
-        
             } finally {
                 $conn = null;
             }
