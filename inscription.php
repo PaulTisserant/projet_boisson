@@ -197,13 +197,12 @@ if($_POST['Submit']){
         $login_bdd = isset($_POST['Login']) ? $_POST['Login'] : null;
         $telephone_bdd = isset($_POST['telephone']) ? $_POST['telephone'] : null;
         try {
-            $conn = new PDO('mysql:host=localhost;dbname=boisson', "root", "");
+            $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
             $sql = "INSERT INTO users (login, password, first_name, last_name, gender, email, birthdate, address, postal_code, city, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$login_bdd, $motDePasse_bdd, $nom_bdd, $prenom_bdd, $sexe_bdd, $email_bdd, $naissance_bdd, $adresse_bdd, $codePostal_bdd, $ville_bdd, $telephone_bdd]);
         } catch (PDOException $e) {
             echo "Erreur !: " . $e->getMessage() . "<br/>";
-        
             } finally {
                 $conn = null;
             }
