@@ -47,11 +47,13 @@ if($_POST['Submit']){
     if(isset($_POST['email'])){
         $mail = $_POST['email'] ;
         //Verification si l'utiliateur a remplis le champ Email
+        /*
        if(strlen($mail) > 0 ){
            if(filter_var($mail, FILTER_VALIDATE_EMAIL)){
                $email = FALSE ;
            }
        }
+       */
     }
     //Verif Telephone
     if(isset($_POST['telephone'])){
@@ -183,7 +185,7 @@ if($_POST['Submit']){
     </form>
 
 <?php  
-if($_POST['Submit']){
+if($_POST['Submit']){  
     if (($prenom==TRUE) && ($nom==TRUE)  && ($email==TRUE)  && $sexe==TRUE  && $ville==TRUE  && $codePostal==TRUE  && $adresse==TRUE  && $naissance==TRUE  && $motDePasse==TRUE  && $login==TRUE  && $telephone==TRUE ){
         $prenom = isset($_POST['Prenom']) ? $_POST['Prenom'] : null;
         $nom_bdd = isset($_POST['Nom']) ? $_POST['Nom'] : null;
@@ -203,6 +205,7 @@ if($_POST['Submit']){
             $stmt->execute([$login_bdd, $motDePasse_bdd, $nom_bdd, $prenom_bdd, $sexe_bdd, $email_bdd, $naissance_bdd, $adresse_bdd, $codePostal_bdd, $ville_bdd, $telephone_bdd]);
         } catch (PDOException $e) {
             echo "Erreur !: " . $e->getMessage() . "<br/>";
+        
             } finally {
                 $conn = null;
             }
