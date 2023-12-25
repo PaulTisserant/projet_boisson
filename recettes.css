@@ -33,6 +33,12 @@ nav ul li a.active {
     color: #ab3333;
 }
 
+.cardContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .card {
     width: 300px;
     margin: 20px;
@@ -40,6 +46,11 @@ nav ul li a.active {
     border-radius: 5px;
     padding: 10px;
     box-shadow: 0 0 10px #ccc;
+}
+
+.card:hover {
+    scale: 1.1;
+    transform: translate(0, -5px);
 }
 
 .card img {
