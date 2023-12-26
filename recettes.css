@@ -1,8 +1,15 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f2f2f2;
+}
+
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #f2f2f2;
+    background-color: #918e8e;
     padding: 10px;
     margin-bottom: 20px;
 }
@@ -91,4 +98,43 @@ nav ul li a.active {
 .researchButton:hover {
     background-color: #fff;
     color: #ab3333;
+}
+
+
+#ingredientsList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 700px;
+    list-style: none;
+    direction: rtl;
+}
+
+
+#ingredientsList li {
+    display: flex;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#ingredientsList li .deleteButton {
+    float: right;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ab3333;
+    color: #fff;
+    cursor: pointer;
+}
+
+#ingredientsList li p {
+    float: left;
+    margin: 0;
 }
