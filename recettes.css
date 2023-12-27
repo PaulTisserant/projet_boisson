@@ -100,6 +100,22 @@ nav ul li a.active {
     color: #ab3333;
 }
 
+.selector {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+    margin: 20px;
+}
+
+.selector option {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+    margin: 20px;
+}
+
 
 #ingredientsList {
     display: flex;

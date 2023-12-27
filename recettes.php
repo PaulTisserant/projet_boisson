@@ -23,12 +23,10 @@
     <h1>Recettes</h1>
 
     <!-- Bar de recherche -->
-    <form action="recettes.php" method="POST">
+    <form action="recettes.php" method="GET">
         <input type="text" name="search" placeholder="Rechercher une recette" class="searchBar">
-        <input type="submit" value="Rechercher" class="researchButton">
+        <input type="submit" value="Rechercher" class="researchButton" id="researchButton">
         <?php 
-            //recherche par ingredients avec un selecteur
-
             try {
                 $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -38,19 +36,19 @@
                 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 $ingredients = "";
 
-                if (isset($_POST['ingredients']) && $_POST['ingredients'] != "") {
-                    $ingredients = $_POST['ingredients'];
+                if (isset($_GET['ingredients']) && $_GET['ingredients'] != "") {
+                    $ingredients = $_GET['ingredients'];
                 }
 
-                echo "<select name='ingredients' id='ingredients'>";
-                echo "<option value='$ingredients'>Rechercher par ingrédients</option>";
+                echo "<select name='ingredients' id='ingredients' class='selector' multiple>";
+                echo "<option>Rechercher par ingrédients</option>";
                 foreach ($result as $ingredient) {
                     echo "<option value='" . $ingredient['nom'] . "'>" . $ingredient['nom'] . "</option>";
                 }
                 echo "</select>";
 
             } catch (PDOException $e) {
-                echo "Erreur : " . $e->POSTMessage();
+                echo "Erreur : " . $e->GETMessage();
             }
         ?>
     </form>
@@ -58,7 +56,6 @@
     <!-- Liste des ingredients selectionnés -->
     <div id="ingredientsListContainer">
         <ul id="ingredientsList">
-            <li>selection</li>
         </ul>
     </div>
 
@@ -73,11 +70,12 @@
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                 // recherche si la variable search se trouve dans toutes les données d'une recette
-                if (isset($_POST['search']) && $_POST['search'] != "") {
-                    $search = $_POST['search'];
+                if (isset($_GET['search']) && $_GET['search'] != "") {
+                    $search = $_GET['search'];
                     $stmt = $conn->prepare("SELECT * FROM recipes WHERE title LIKE '%$search%' OR food_index LIKE '%$search%' OR ingredients LIKE '%$search%' OR preparation LIKE '%$search%'");
-                } else if (isset($_POST['ingredients'])) {
-                    $stmt = $conn->prepare("SELECT * FROM recipes WHERE food_index LIKE '%" . $_POST['ingredients'] . "%'");
+                } else if (isset($_GET['ingredients'])) {
+                    $ingredients = $_GET['ingredients'];
+                    $stmt = $conn->prepare("SELECT * FROM recipes WHERE food_index LIKE '%" . $_GET['ingredients'] . "%'");
                 } else {
                     $stmt = $conn->prepare("SELECT * FROM recipes");
                 }
@@ -97,7 +95,7 @@
 
                 
             } catch (PDOException $e) {
-                echo "Erreur : " . $e->POSTMessage();
+                echo "Erreur : " . $e->GETMessage();
             }
 
 
@@ -167,10 +165,13 @@
             localStorage.setItem('ingredientsList', JSON.stringify(ingredientsList));
             
             updateIngredientsList();
+
+
         });
 
         // Appel initial pour afficher la liste au chargement de la page
         updateIngredientsList();
+
 
     </script>
 </html>
