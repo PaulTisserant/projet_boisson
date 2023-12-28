@@ -49,36 +49,50 @@
         label_mdp.style.color = "red" ;
 
     function handleBlurNom() {
+
+    var button = document.getElementById("button");
+
         var nom_input = document.getElementById("nom_input");
         var nom = document.getElementById("nom") ;
         if ( /\d/.test(nom_input.value) ) {
             if(!nom.contains(label_nom)){
                 nom.appendChild(label_nom) ;
             }
-            nom.style.color = "red" ;      
+            console.log("error nom");
+            nom.style.color = "red" ;  
+            return false ;
         }else{
             if(nom.contains(label_nom)){
                 nom.removeChild(label_nom) ;
             }
             nom.style.color = "black" ;
+            return true ;
+
         }
     }
     function handleBlurPrenom() {
+        var button = document.getElementById("button");
         var prenom_input = document.getElementById("prenom_input");
         var prenom = document.getElementById("prenom");
         if ( /\d/.test(prenom_input.value)) {
             if (!prenom.contains(label_prenom)) {
                 prenom.appendChild(label_prenom);
             }
+            console.log("error prenom");
             prenom.style.color = "red";
+            return false;
+
         } else {
             if (prenom.contains(label_prenom)) {
                 prenom.removeChild(label_prenom);
             }
             prenom.style.color = "black";
+            return true;
+
         }
     }
     function handleBlurEmail() {
+        var button = document.getElementById("button");
         var email_input = document.getElementById("email_input");
         var email = document.getElementById("email");
 
@@ -86,15 +100,19 @@
             if (!email.contains(label_email)) {
                 email.appendChild(label_email);
             }
+            console.log("error mail");
             email.style.color = "red";
+            return false;
         } else {
             if (email.contains(label_email)) {
                 email.removeChild(label_email);
             }
             email.style.color = "black";
+            return true;
         }
     }  
     function handleBlurVille() {
+        var button = document.getElementById("button");
         var ville_input = document.getElementById("ville_input");
         var ville = document.getElementById("ville");
 
@@ -102,28 +120,35 @@
             if (!ville.contains(label_ville)) {
                 ville.appendChild(label_ville);
             }
+            console.log("error ville");
             ville.style.color = "red";
+            return false;
         } else {
             if (ville.contains(label_ville)) {
                 ville.removeChild(label_ville);
             }
             ville.style.color = "black";
+            return true;
         }
     } 
     function handleBlurCodePostal() {
+        var button = document.getElementById("button");
         var codePostal_input = document.getElementById("codePostal_input");
         var codePostal = document.getElementById("codePostal");
 
-        if (!/\d{5}/.test(codePostal_input.value)) {
+        if (!/^.{0}$/.test(codePostal_input.value)  && !/\d{5}/.test(codePostal_input.value)) {
             if (!codePostal.contains(label_codePostal)) {
                 codePostal.appendChild(label_codePostal);
             }
             codePostal.style.color = "red";
+            console.log("error postal");
+            return false;
         } else {
             if (codePostal.contains(label_codePostal)) {
                 codePostal.removeChild(label_codePostal);
             }
             codePostal.style.color = "black";
+            return true;
         }
     }
     function handleBlurTel() {
@@ -134,12 +159,15 @@
             if (!tel.contains(label_tel)) {
                 tel.appendChild(label_tel);
             }
+            console.log("error tel");
             tel.style.color = "red";
+            return false;
         } else {
             if (tel.contains(label_tel)) {
                 tel.removeChild(label_tel);
             }
             tel.style.color = "black";
+            return true;
         }
     }
     function handleBlurLogin() {
@@ -150,29 +178,51 @@
             if (!login.contains(label_login)) {
                 login.appendChild(label_login);
             }
+            console.log("error login");
             login.style.color = "red";
+            return false;
         } else {
             if (login.contains(label_login)) {
                 login.removeChild(label_login);
             }
             login.style.color = "black";
-        }
+            return true;
+        } 
     }    
     function handleBlurMdp() {
         var mdp_input = document.getElementById("mdp_input");
         var mdp_confirm_input = document.getElementById("mdp_confirm_input");
         var mdp = document.getElementById("mdp");
 
-        if (!(/.{8,}/.test(mdp_input.value ))|| !/[A-Z]{1,}/.test(mdp_input.value) || !mdp_confirm_input.value === mdp_input.value ) {
+        if (!(/.{8,}/.test(mdp_input.value ))|| !/[A-Z]{1,}/.test(mdp_input.value) || !(mdp_confirm_input.value === mdp_input.value) ) {
             if (!mdp.contains(label_mdp)) {
                 mdp.appendChild(label_mdp);
             }
+            console.log("error MDP");
             mdp.style.color = "red";
+            return false;
         } else {
             if (mdp.contains(label_mdp)) {
                 mdp.removeChild(label_mdp);
             }
             mdp.style.color = "black";
+            return true;
+        }
+    }
+    function verifAll() {
+        handleBlurNom() ;  
+        handleBlurPrenom();  
+        handleBlurEmail();
+        handleBlurTel();
+        handleBlurVille();
+        handleBlurCodePostal();
+        handleBlurMdp();
+        handleBlurLogin();
+        if(handleBlurNom()==true && handleBlurPrenom()==true && handleBlurEmail()==true && handleBlurTel()==true && handleBlurVille()==true && handleBlurCodePostal()==true && handleBlurMdp()==true && handleBlurLogin()==true ) {
+            //Faire un submit
+            document.getElementById("form_insc").submit('Submit');
+        }else{
+            alert("Veuillez remplir correctement tous les champs") ;
         }
     }
 
@@ -183,8 +233,7 @@ session_start() ;
 ?>
     <h1>Inscription</h1>
 
-    <form style="align-content: center;"  method="post" action="#" >
-    <?php  ?>
+    <form style="align-content: center;" id="form_insc"  method="post" action="#" > 
     <h3>Information Optionel :</h3>
     <label id="nom" >Nom :</label>
   
@@ -215,24 +264,169 @@ session_start() ;
 
     <h3 >Information Obligatoire : </h3>
     <label id="login" >Login :</label>
-    <input id ="login_input" type="text" onblur="handleBlurLogin()" >
+    <input name="login_input" id ="login_input" type="text" onblur="handleBlurLogin()" >
     <br>
 
     <label id="mdp" >Mot de passe :</label>
-    <input id ="mdp_input" type="text"  onblur="handleBlurMdp()">
+    <input name="mdp_input" id ="mdp_input" type="text"  onblur="handleBlurMdp()">
     <br>
     <label id="mdp_confirm" > Confirmation Mot de passe :</label>
-    <input id ="mdp_confirm_input" type="text" onblur="handleBlurMdp()" >
+    <input name="mdp_confirm_input"id ="mdp_confirm_input" type="text" onblur="handleBlurMdp()" >
     <br>
-    <input type="submit" name="Submit" value="S'inscrire">
+    <button id="button" onclick="verifAll()" name="Submit">S'inscrire</button>
 
-    
    
     </form>
 
-<?php  
+<?php
+
+// definition des variables
+$prenom = TRUE ;
+$nom = TRUE ;
+$email = TRUE ;
+$sexe = TRUE ;
+$ville = TRUE ;
+$codePostal = TRUE ;
+$adresse = TRUE ;
+$naissance = TRUE ;
+$motDePasse = TRUE ;
+$login = TRUE ;
+$telephone = TRUE ;
+$mdp_SizeError = FALSE ;
+$login_SizeError = FALSE ;
+$login_ExistError = FALSE ;
+
+$mdp_EqualsError = FALSE ;
+$mdp_UpperError = FALSE ;
+
+//Verification des donnees
 if($_POST['Submit']){
+    //Verif NOM
+    if(isset($_POST['nom_input'])){
+         $pre = $_POST['nom_input'] ;
+         //Verification si l'utiliateur a remplis le champ Nom
+        if(strlen($pre) > 0 ){
+            if(preg_match('/\d/',$pre)){
+                $nom = FALSE ;
+            }
+        }
+    }
+    //Verif PRENOM
+    if(isset($_POST['prenom_input'])){
+        $pre = $_POST['prenom_input'] ;
+        //Verification si l'utiliateur a remplis le champ Prenom
+       if(strlen($pre) > 0 ){
+           if(preg_match('/\d/',$pre)){
+               $prenom = FALSE ;
+           }
+       }
+    }
+    //Verif EMAIL
+    if(isset($_POST['email'])){
+        $mail = $_POST['email'] ;
+        //Verification si l'utiliateur a remplis le champ Email
+       if(preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i',$var_mail ))
+       {
+            $email = FALSE ;
+       }
+    }
+    //Verif Telephone
+    if(isset($_POST['telephone'])){
+        $tele = $_POST['telephone'] ;
+        //Verification si l'utiliateur a remplis le champ CodePostal
+        if(strlen($tele) > 0 ){
+            if(!preg_match('/^[0-9]*$/',$tele)){
+                $telephone = FALSE ;
+            }
+        }
+    }
+    //Verif VILLE
+    if(isset($_POST['ville'])){
+        $vil = $_POST['ville'] ;
+        //Verification si l'utiliateur a remplis le champ Villle
+       if(strlen($vil) > 0 ){
+           if(!preg_match('/^[a-zA-Z]*$/',$vil)){
+               $ville = FALSE ;
+           }
+       }
+    }
+    //Verif CodePostal
+    if(isset($_POST['Postal'])){
+        $post = $_POST['Postal'] ;
+        //Verification si l'utiliateur a remplis le champ CodePostal
+        if(strlen($post) > 0 ){
+            if(!preg_match('/^[0-9]*$/',$post)){
+                $codePostal = FALSE ;
+            }
+        }
+    }
+
+    //Verif Sexe
+    if (isset($_POST['sexe'])) {
+        if (!($_POST['sexe'] ==  'F' || $_POST['sexe'] == 'H')) {
+            $sexe=FALSE ;
+        }
+    }
+    //Verif Date Naissance
+    if (isset($_POST['naissance'])) {
+        $date=$_POST['naissance'] ;
+        if (!(checkdate(date("m",strtotime($date) ), date("d",strtotime($date) ), date("Y",strtotime($date) )))) {
+          $naissance=FALSE ;
+        }
+    }
+
+    //Verif Login
+    if(isset($_POST['login_input'])){
+        $log = $_POST['login_input'] ;
+        //Verification si l'utiliateur a remplis le champ Login avec au moins 5 caracteres
+        if(!preg_match('/.{5,}/',$log) ){
+                $login = FALSE ;
+                $login_SizeError = TRUE ;
+
+        }
+        //Verification si le login est disponible
+        try {
+            $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
+
+            // Utilisation de requête préparée pour éviter les attaques par injection SQL
+            $sql = "SELECT user_id FROM users WHERE login = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$log]);
+            // Si une ligne est retournée, le login existe
+            if ($stmt->rowCount() > 0) {
+                $login= FALSE ;
+                $login_ExistError = TRUE ;
+            }
+
+        } catch (PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
+        } finally {
+            $conn = null;
+        }
+    }
+
+    //Verif Mot De Passe
+    if(isset($_POST['mdp_input']) && isset($_POST['mdp_confirm_input'])){
+        $mdp1 = $_POST['mdp_input'] ;
+        $mdp2 = $_POST['mdp_confirm_input'] ;
+        //Verification si l'utiliateur a remplis le champ MDP avec au moins 8 caracteres
+        if(!preg_match('/.{8,}/',$mdp1)){
+                $motDePasse = FALSE ;
+                $mdp_SizeError = TRUE ;
+        }
+        elseif(!preg_match('/[A-Z]{1,}/',$mdp1)){
+            $mdp_UpperError = TRUE ;
+            $motDePasse = FALSE ;
+        }
+        elseif(!($mdp1 === $mdp2)){
+                $motDePasse = FALSE ;
+                $mdp_EqualsError = TRUE ;
+        }
+    }
+    }
+if(isset($_POST['Submit'])){
     if (($prenom==TRUE) && ($nom==TRUE)  && ($email==TRUE)  && $sexe==TRUE  && $ville==TRUE  && $codePostal==TRUE  && $adresse==TRUE  && $naissance==TRUE  && $motDePasse==TRUE  && $login==TRUE  && $telephone==TRUE ){
+        echo "submit" ;
         $prenom = isset($_POST['Prenom']) ? $_POST['Prenom'] : null;
         $nom_bdd = isset($_POST['Nom']) ? $_POST['Nom'] : null;
         $email_bdd = isset($_POST['email']) ? $_POST['email'] : null;
@@ -241,9 +435,10 @@ if($_POST['Submit']){
         $codePostal_bdd = isset($_POST['Postal']) ? $_POST['Postal'] : null;
         $adresse_bdd = isset($_POST['adresse']) ? $_POST['adresse'] : null;
         $naissance_bdd = isset($_POST['naissance']) ? date('Y-m-d', strtotime($_POST['naissance'])) : null;
-        $motDePasse_bdd = isset($_POST['MDP']) ? $_POST['MDP'] : null;
-        $login_bdd = isset($_POST['Login']) ? $_POST['Login'] : null;
+        $motDePasse_bdd = isset($_POST['mdp_input']) ? $_POST['mdp_input'] : null;
+        $login_bdd = isset($_POST['login_input']) ? $_POST['login_input'] : null;
         $telephone_bdd = isset($_POST['telephone']) ? $_POST['telephone'] : null;
+
         try {
             $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
             $sql = "INSERT INTO users (login, password, first_name, last_name, gender, email, birthdate, address, postal_code, city, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -254,7 +449,14 @@ if($_POST['Submit']){
             } finally {
                 $conn = null;
             }
+        header("Location:verif.php");
+        exit();
+    
+    }else{
+        echo "chamspell" ;
     }
+}else{
+    echo "erreur" ;
 }
 
 ?>
