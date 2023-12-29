@@ -4,8 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="inscription.css">
 </head>
 <body>
+    <?php
+function move_to(){
+echo "<script>window.top.location='compte.php'</script>" ;
+ob_end_flush();
+exit ;
+}
+?>
 <script>
         var label_nom = document.createElement("label");
         label_nom.textContent = "(Erreur Le nom est obligatoire)" ;
@@ -56,6 +65,7 @@
         var nom = document.getElementById("nom") ;
         if ( /\d/.test(nom_input.value) ) {
             if(!nom.contains(label_nom)){
+                label_nom.textContent = "(Le nom ne dois pas contenir de chiffres)" ;
                 nom.appendChild(label_nom) ;
             }
             console.log("error nom");
@@ -76,6 +86,7 @@
         var prenom = document.getElementById("prenom");
         if ( /\d/.test(prenom_input.value)) {
             if (!prenom.contains(label_prenom)) {
+                label_prenom.textContent = "(Le prenom ne dois pas contenir de chiffres)" ;
                 prenom.appendChild(label_prenom);
             }
             console.log("error prenom");
@@ -98,6 +109,7 @@
 
         if ( /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/.test(email_input.value)) {
             if (!email.contains(label_email)) {
+                label_email.textContent = "(Le format de l'adresse email est incorrect)" ;
                 email.appendChild(label_email);
             }
             console.log("error mail");
@@ -118,6 +130,7 @@
 
         if (! /^[a-zA-Z-]*$/.test(ville_input.value)) {
             if (!ville.contains(label_ville)) {
+                label_ville.textContent = "(Le nom d'une ville ne doit contenir que des lettres et des tirets)" ;
                 ville.appendChild(label_ville);
             }
             console.log("error ville");
@@ -138,6 +151,7 @@
 
         if (!/^.{0}$/.test(codePostal_input.value)  && !/\d{5}/.test(codePostal_input.value)) {
             if (!codePostal.contains(label_codePostal)) {
+                label_codePostal.textContent = "(Le code postal ne doit contenir que 5 chiffres)" ;
                 codePostal.appendChild(label_codePostal);
             }
             codePostal.style.color = "red";
@@ -157,6 +171,7 @@
 
         if ( !/^.{0}$/.test(tel_input.value)  && !/(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}/.test(tel_input.value)) {
             if (!tel.contains(label_tel)) {
+                label_tel.textContent = "(Le format du numero de telephone est incorrect)" ;
                 tel.appendChild(label_tel);
             }
             console.log("error tel");
@@ -174,8 +189,30 @@
         var login_input = document.getElementById("login_input");
         var login = document.getElementById("login");
 
+        $.ajax({
+        type: "POST",
+        url: "verif.php",  // Assurez-vous de spécifier le chemin correct vers votre script PHP
+        data: { 
+            maVariable: login_input.value 
+        },        success: function(response) {
+            console.log("Succès :", response);
+            if (response == "False") {
+                if (!login.contains(label_login)) {
+                    label_login.textContent = "(Ce login est déjà utilisé)" ;
+                    login.appendChild(label_login);
+                }
+                console.log("error login");
+                login.style.color = "red";
+                return false;
+            }
+        },
+        error: function(error) {
+            console.error("Erreur :", error);
+        }
+    });
         if (!/.{5,}/.test(login_input.value)) {
             if (!login.contains(label_login)) {
+                label_login.textContent = "(Le login doit contenir au moins 5 caractères)" ;
                 login.appendChild(label_login);
             }
             console.log("error login");
@@ -194,20 +231,31 @@
         var mdp_confirm_input = document.getElementById("mdp_confirm_input");
         var mdp = document.getElementById("mdp");
 
-        if (!(/.{8,}/.test(mdp_input.value ))|| !/[A-Z]{1,}/.test(mdp_input.value) || !(mdp_confirm_input.value === mdp_input.value) ) {
+        if (!(/.{8,}/.test(mdp_input.value ))|| !/[A-Z]{1,}/.test(mdp_input.value)   ) {
             if (!mdp.contains(label_mdp)) {
+                label_mdp.textContent = "(Le mot de passe doit contenir au moins 8 caractères et une majuscule)" ;
                 mdp.appendChild(label_mdp);
             }
             console.log("error MDP");
             mdp.style.color = "red";
             return false;
-        } else {
+        } else if (!(mdp_confirm_input.value === mdp_input.value)) {
+            if (!mdp.contains(label_mdp)) {
+                label_mdp.textContent = "(La confirmation du mot de passe ne correspond pas)" ;
+                mdp.appendChild(label_mdp);
+            }
+            console.log("error MDP");
+            mdp.style.color = "red";
+            return false;
+
+        }else{
             if (mdp.contains(label_mdp)) {
                 mdp.removeChild(label_mdp);
             }
             mdp.style.color = "black";
             return true;
         }
+
     }
     function verifAll() {
         handleBlurNom() ;  
@@ -220,6 +268,7 @@
         handleBlurLogin();
         if(handleBlurNom()==true && handleBlurPrenom()==true && handleBlurEmail()==true && handleBlurTel()==true && handleBlurVille()==true && handleBlurCodePostal()==true && handleBlurMdp()==true && handleBlurLogin()==true ) {
             //Faire un submit
+            alert('submit') ;
             document.getElementById("form_insc").submit('Submit');
         }else{
             alert("Veuillez remplir correctement tous les champs") ;
@@ -228,12 +277,23 @@
 
 
 </script>
-<?php  
-session_start() ;
-?>
-    <h1>Inscription</h1>
+
+<nav>
+        <ul>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="recettes.php">Recettes</a></li>
+            <li><a href="inscription.php">Inscription</a></li>
+            <li><a href="connexion.php">Connexion</a></li>
+        </ul>
+    </nav>
+    <div class="conteneur" style="align-self: center;">
+
+
+
 
     <form style="align-content: center;" id="form_insc"  method="post" action="#" > 
+    <h1>S'inscrire</h1>
+
     <h3>Information Optionel :</h3>
     <label id="nom" >Nom :</label>
   
@@ -273,11 +333,11 @@ session_start() ;
     <label id="mdp_confirm" > Confirmation Mot de passe :</label>
     <input name="mdp_confirm_input"id ="mdp_confirm_input" type="text" onblur="handleBlurMdp()" >
     <br>
-    <button id="button" onclick="verifAll()" name="Submit">S'inscrire</button>
+    <button id = "button" type="button" onclick="verifAll()">S'inscrire</button>
 
    
     </form>
-
+</div>
 <?php
 
 // definition des variables
@@ -299,8 +359,17 @@ $login_ExistError = FALSE ;
 $mdp_EqualsError = FALSE ;
 $mdp_UpperError = FALSE ;
 
+if($_POST['maVariable']){
+
+    echo 'test' ;
+}
+
+
+
+
+
 //Verification des donnees
-if($_POST['Submit']){
+if($_SERVER["REQUEST_METHOD"] == "POST"){
     //Verif NOM
     if(isset($_POST['nom_input'])){
          $pre = $_POST['nom_input'] ;
@@ -387,8 +456,6 @@ if($_POST['Submit']){
         //Verification si le login est disponible
         try {
             $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
-
-            // Utilisation de requête préparée pour éviter les attaques par injection SQL
             $sql = "SELECT user_id FROM users WHERE login = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$log]);
@@ -424,7 +491,7 @@ if($_POST['Submit']){
         }
     }
     }
-if(isset($_POST['Submit'])){
+if(($_SERVER["REQUEST_METHOD"] == "POST")){
     if (($prenom==TRUE) && ($nom==TRUE)  && ($email==TRUE)  && $sexe==TRUE  && $ville==TRUE  && $codePostal==TRUE  && $adresse==TRUE  && $naissance==TRUE  && $motDePasse==TRUE  && $login==TRUE  && $telephone==TRUE ){
         echo "submit" ;
         $prenom = isset($_POST['Prenom']) ? $_POST['Prenom'] : null;
@@ -444,19 +511,16 @@ if(isset($_POST['Submit'])){
             $sql = "INSERT INTO users (login, password, first_name, last_name, gender, email, birthdate, address, postal_code, city, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$login_bdd, $motDePasse_bdd, $nom_bdd, $prenom_bdd, $sexe_bdd, $email_bdd, $naissance_bdd, $adresse_bdd, $codePostal_bdd, $ville_bdd, $telephone_bdd]);
+            move_to() ;
+            echo "eroor move_to" ;
+            exit();
         } catch (PDOException $e) {
             echo "Erreur !: " . $e->getMessage() . "<br/>";
             } finally {
                 $conn = null;
             }
-        header("Location:verif.php");
-        exit();
-    
-    }else{
-        echo "chamspell" ;
+
     }
-}else{
-    echo "erreur" ;
 }
 
 ?>
