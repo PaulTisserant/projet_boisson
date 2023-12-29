@@ -328,10 +328,10 @@ exit ;
     <br>
 
     <label id="mdp" >Mot de passe :</label>
-    <input name="mdp_input" id ="mdp_input" type="text"  onblur="handleBlurMdp()">
+    <input name="mdp_input" id ="mdp_input" type="password"  onblur="handleBlurMdp()">
     <br>
     <label id="mdp_confirm" > Confirmation Mot de passe :</label>
-    <input name="mdp_confirm_input"id ="mdp_confirm_input" type="text" onblur="handleBlurMdp()" >
+    <input name="mdp_confirm_input"id ="mdp_confirm_input" type="password" onblur="handleBlurMdp()" >
     <br>
     <button id = "button" type="button" onclick="verifAll()">S'inscrire</button>
 
