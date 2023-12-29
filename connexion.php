@@ -14,6 +14,7 @@
     session_start();
 
     if(verifConn()){
+        echo "connect" ;
         header('Location: compte.php');
         exit() ;
     }else{
@@ -32,6 +33,8 @@
                         $sub = true ;
                         $_SESSION['user_id'] = $stmt->fetchColumn();
                         $_SESSION['login'] =  $log ;
+                        header('Location: compte.php');
+                        exit() ;
                     }
                 } catch (PDOException $e) {
                     echo "Erreur : " . $e->getMessage();
