@@ -96,19 +96,97 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["supprimer"]) ){
 
 $pass = afficherMotDePasse($password) ;
 echo "
+<table>
+<tr>
+    <td>
+    <p > Nom : <span class='info'> $last_name </span>  </p> 
+    </td>
+    <td class = 'butCell'>
+    <button class='but' onclick=\"afficherCadre('nom')\">Modifier Nom</button>
+    </td>
+</tr>
 
+<tr>
+    <td>
+    <p id = 'prenom'> Prenom : <span class='info'> $first_name </span>
+    </td>
+    <td class='butCell'> 
+    <button class='but' onclick=\"afficherCadre('prenom')\">Modifier Prenom</button> </p> 
+    </td>
+</tr>
 
-<p > Nom : <span class='info'> $last_name </span> <button class='but' onclick=\"afficherCadre('nom')\">Modifier Nom</button> </p> 
-
-<p id = 'prenom'> Prenom : <span class='info'> $first_name </span> <button class='but' onclick=\"afficherCadre('prenom')\">Modifier Prenom</button> </p>  
+<tr> 
+<td>
 <p> Civilite : <span class='info'> $gender  </span> </p> 
-<p> Email : <span class='info'> $email </span>  class='but' onclick=\"afficherCadre('email')\">Modifier Email</button></p> 
-<p> Tel : <span class='info'> $phone_number </span> <button class='but' onclick=\"afficherCadre('tel')\">Modifier Numero</button> </p> 
-<p> Ville : <span class='info'> $city </span> <button class='but' onclick=\"afficherCadre('ville')\">Modifier Ville</button> </p> 
-<p> Code Postal : <span class='info'>$postal_code </span> <button class='but' onclick=\"afficherCadre('codePostal')\">Modifier code Postal</button> </p> 
-<p> Adresse : <span class='info'> $address </span> <button class='but' onclick=\"afficherCadre('adresse')\">Modifier Adresse</button> </p> 
-<p> Login : <span class='info'> $login </span> <button class='but' onclick=\"afficherCadre('login')\">Modifier Login</button> </p> 
-<p> Mot de passe : <span class='info'>$pass </span> <button class='but' onclick=\"afficherCadre('mdp')\">Modifier Mot De Passe</button>  </p> 
+</td>
+<td class='butCell'>
+<button class='but' onclick=\"afficherCadre('email')\">Modifier Civilite</button>
+</td>
+</tr>
+
+<tr>
+    <td>
+    <p> Email : <span class='info'> $email </span> </p>
+    </td>
+    <td class='butCell'>
+    <button class='but' onclick=\"afficherCadre('email')\">Modifier Email</button>
+    </td>
+</tr>
+
+<tr> 
+    <td>
+    <p> Tel : <span class='info'> $phone_number </span> </p>
+    </td>
+    <td class='butCell'>
+    <button class='but' onclick=\"afficherCadre('tel')\">Modifier Numero</button> 
+    </td>
+</tr>
+
+<tr> 
+    <td>
+    <p> Ville : <span class='info'> $city </span> </p>
+    </td>
+    <td class='butCell'>
+    <button class='but' onclick=\"afficherCadre('ville')\">Modifier Ville</button> 
+    </td>
+</tr>
+
+<tr> 
+    <td>
+    <p> Code Postal : <span class='info'>$postal_code </span> </p>
+    </td>
+    <td class='butCell'>
+    <button class='but' onclick=\"afficherCadre('codePostal')\">Modifier code Postal</button> 
+    </td>
+</tr>
+
+<tr> 
+    <td>
+    <p> Adresse : <span class='info'> $address </span> </p>
+    </td>
+    <td class='butCell'>
+    <button class='but' onclick=\"afficherCadre('adresse')\">Modifier Adresse</button>  
+    </td>
+</tr>
+
+<tr>
+    <td>
+    <p> Login : <span class='info'> $login </span> </p>
+    </td>
+    <td class='butCell'>
+    <button class='but' onclick=\"afficherCadre('login')\">Modifier Login</button> 
+    </td>
+</tr>
+
+<tr> 
+    <td>
+    <p> Mot de passe : <span class='info'>$pass </span>  </p> 
+    </td>
+    <td class='butCell'>
+    <button class='but' onclick=\"afficherCadre('mdp')\">Modifier Mot De Passe</button>  
+    </td>
+</tr>
+</table>
 <form method='post' action='#'>
     <input type='submit' name='supprimer' value='Supprimer le compte'>
 </form>
@@ -191,7 +269,7 @@ function afficherCadre(champ) {
                     // Code à exécuter lorsque l'input perd le focus
                     handleBlurEmail() ;
                 };
-        
+         
             break;
             case "tel":
                 // Créer le champ d'entrée (input)
@@ -328,18 +406,75 @@ function afficherCadre(champ) {
         document.getElementById('mod').appendChild(cadre);
 
         // Afficher le cadre
-        cadre.style.display = 'block';
+        cadre.style.display = 'grid';
     }
     function validerChamp(champ) {
         var input_name =  champ + "_input" ; 
         // Récupérer la valeur du champ d'entrée
         var nouveauNom = document.getElementById(input_name).value;
 
+        // Créer une instance de l'objet XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+
+        // Définir la fonction de rappel pour gérer la réponse
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        };
+
+        // Ouvrir une requête POST vers le fichier PHP avec la fonction à appeler
+        xhr.open("POST", "modificationBdd.php", true);
+
+        // Définir l'en-tête de la requête pour indiquer que c'est une requête POST
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                switch (champ) {
+            case 'nom':
+                console.log("envoyer nom");
+                xhr.send("nom=" + encodeURIComponent(nouveauNom));
+                
+                break;
+        
+            default:
+                break;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         // Faire quelque chose avec la nouvelle valeur (ici, affichage dans la console)
         console.log("Nouveau Nom:", nouveauNom);
 
         // Cacher le cadre après validation (vous pouvez ajuster cette logique)
         document.querySelector('.cadre').remove();
+    }
+
+
+    function changerCivil(){
+        // Créer une instance de l'objet XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+
+        // Définir la fonction de rappel pour gérer la réponse
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                //
+            }
+        };
+
+        // Ouvrir une requête POST vers le fichier PHP avec la fonction à appeler
+        xhr.open("POST", "modificationBdd.php", true);
+
+        // Définir l'en-tête de la requête pour indiquer que c'est une requête POST
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr("sexe=" + encodeURIComponent('sexe'))     
     }
     var label_nom = document.createElement("label");
         label_nom.textContent = "(Erreur Le nom est obligatoire)" ;
@@ -430,8 +565,9 @@ function afficherCadre(champ) {
         var button = document.getElementById("button");
         var email_input = document.getElementById("email_input");
         var email = document.getElementById("email");
+        var emailReg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
 
-        if ( /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/.test(email_input.value)) {
+        if (!emailReg.test(email_input.value)) {
             if (!email.contains(label_email)) {
                 label_email.textContent = "(Le format de l'adresse email est incorrect)" ;
                 email.appendChild(label_email);

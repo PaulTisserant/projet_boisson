@@ -116,8 +116,9 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
         var button = document.getElementById("button");
         var email_input = document.getElementById("email_input");
         var email = document.getElementById("email");
+        var emailReg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
 
-        if ( /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/.test(email_input.value)) {
+        if (emailReg.test(email_input.value)) {
             if (!email.contains(label_email)) {
                 label_email.textContent = "(Le format de l'adresse email est incorrect)" ;
                 email.appendChild(label_email);
@@ -368,10 +369,7 @@ $login_ExistError = FALSE ;
 $mdp_EqualsError = FALSE ;
 $mdp_UpperError = FALSE ;
 
-if($_POST['maVariable']){
 
-    echo 'test' ;
-}
 
 
 
