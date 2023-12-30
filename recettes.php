@@ -41,7 +41,6 @@
                 }
 
                 echo "<select name='ingredients' id='ingredients' class='selector' multiple>";
-                echo "<option>Rechercher par ingrédients</option>";
                 foreach ($result as $ingredient) {
                     echo "<option value='" . $ingredient['nom'] . "'>" . $ingredient['nom'] . "</option>";
                 }
@@ -92,8 +91,6 @@
                 }
 
                 
-
-                
             } catch (PDOException $e) {
                 echo "Erreur : " . $e->GETMessage();
             }
@@ -110,12 +107,12 @@
 
     <script>
 
-        // reset du local storage a chaque chargement de la page
         localStorage.clear();
 
         if (localStorage.getItem('ingredientsList') === null) {
             document.getElementById('ingredientsList').display = "none";
         }
+
 
         // Fonction pour créer un nouvel élément de la liste d'ingrédients
         function createIngredientElement(ingredient, index) {
@@ -124,22 +121,6 @@
             var p = document.createElement('p');
             p.innerHTML = ingredient;
             li.appendChild(p);
-
-            var button = document.createElement('button');
-            button.innerHTML = "X";
-            button.setAttribute('class', 'deleteButton');
-            button.setAttribute('data-index', index);
-
-            li.appendChild(button);
-
-            // Ajout de l'événement de suppression
-            button.addEventListener('click', function() {
-                var ingredientsList = JSON.parse(localStorage.getItem('ingredientsList'));
-                ingredientsList.splice(index, 1);
-                localStorage.setItem('ingredientsList', JSON.stringify(ingredientsList));
-
-                updateIngredientsList();
-            });
 
             return li;
         }
@@ -159,14 +140,20 @@
         }
 
         document.getElementById('ingredients').addEventListener('change', function() {
-            var ingredient = document.getElementById('ingredients').value;
-            var ingredientsList = JSON.parse(localStorage.getItem('ingredientsList')) || [];
-            ingredientsList.push(ingredient);
-            localStorage.setItem('ingredientsList', JSON.stringify(ingredientsList));
+            var options = document.getElementById('ingredients').options;
+
+            var selectedOptions = [];
+            for (var i = 0; i < options.length; i++) {
+                if (options[i].selected) {
+                    selectedOptions.push(options[i].value);
+                }
+            }
+            console.log(selectedOptions);
+            localStorage.setItem('ingredientsList', JSON.stringify(selectedOptions));
             
             updateIngredientsList();
 
-
+            console.log(localStorage.getItem('ingredientsList'));
         });
 
         // Appel initial pour afficher la liste au chargement de la page
