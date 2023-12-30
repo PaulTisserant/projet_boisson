@@ -26,4 +26,16 @@ function verifConn() {
         }
     return false;
 }
+function deconnexion(){
+    session_start();
+    session_unset();
+    session_destroy();
+}
+function afficherMotDePasse($mdp){
+    $txt = "";
+    for ($i=0; $i < strlen($mdp); $i++) { 
+        $txt = $txt . "*";
+    }
+    return $txt;
+}
 ?>

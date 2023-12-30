@@ -14,6 +14,16 @@ echo "<script>window.top.location='compte.php'</script>" ;
 ob_end_flush();
 exit ;
 }
+
+
+session_start();
+
+include "fonction.php" ;
+
+if(verifConn()){
+deconnexion() ;
+echo "<script>alert('Deconnexion reussis');</script>" ;
+}
 ?>
 <script>
         var label_nom = document.createElement("label");
@@ -297,9 +307,9 @@ exit ;
     <h3>Information Optionel :</h3>
     <label id="nom" >Nom :</label>
   
-    <input id ="nom_input" type="text"  onblur="handleBlurNom()">
+    <input name="nom_input" id ="nom_input" type="text"  onblur="handleBlurNom()">
     <label id="prenom" >Prenom :</label>
-    <input id ="prenom_input" type="text" onblur="handleBlurPrenom()" >
+    <input name="prenom_input" id ="prenom_input" type="text" onblur="handleBlurPrenom()" >
     <br>
     <label id="sexe" >Civilite :</label> 
     <br>
@@ -307,19 +317,19 @@ exit ;
     <input type="radio" name="sexe" value="H">Homme  
     <br>
     <label id="email" >Email :</label>
-    <input id ="email_input" type="email" onblur="handleBlurEmail()" >
+    <input name ="email_input" id ="email_input" type="email" onblur="handleBlurEmail()" >
     <br>
     <label id="tel" >Numero de telephone :</label>
-    <input id ="tel_input" type="text" maxlength="10" onblur="handleBlurTel()" >
+    <input name ="tel_input" id ="tel_input" type="text" maxlength="10" onblur="handleBlurTel()" >
     <br>
     <label id="ville" >Ville :</label>
-    <input id ="ville_input" type="text" onblur="handleBlurVille()" >
+    <input name ="ville_input" id ="ville_input" type="text" onblur="handleBlurVille()" >
     <br>
     <label id="codePostal" >Code Postal :</label>
-    <input id ="codePostal_input" type="text" maxlength="5" onblur="handleBlurCodePostal()" >
+    <input name ="codePostal_input" id ="codePostal_input" type="text" maxlength="5" onblur="handleBlurCodePostal()" >
     <br>
     <label id="adresse" >Adresse :</label>
-    <input id ="adresse_input" type="text" >
+    <input name="adresse_input" id ="adresse_input" type="text" >
     <br>
 
     <h3 >Information Obligatoire : </h3>
@@ -339,7 +349,6 @@ exit ;
     </form>
 </div>
 <?php
-
 // definition des variables
 $prenom = TRUE ;
 $nom = TRUE ;
@@ -391,8 +400,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
        }
     }
     //Verif EMAIL
-    if(isset($_POST['email'])){
-        $mail = $_POST['email'] ;
+    if(isset($_POST['email_input'])){
+        $mail = $_POST['email_input'] ;
         //Verification si l'utiliateur a remplis le champ Email
        if(preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i',$var_mail ))
        {
@@ -400,8 +409,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
        }
     }
     //Verif Telephone
-    if(isset($_POST['telephone'])){
-        $tele = $_POST['telephone'] ;
+    if(isset($_POST['tel_input'])){
+        $tele = $_POST['tel_input'] ;
         //Verification si l'utiliateur a remplis le champ CodePostal
         if(strlen($tele) > 0 ){
             if(!preg_match('/^[0-9]*$/',$tele)){
@@ -410,8 +419,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     }
     //Verif VILLE
-    if(isset($_POST['ville'])){
-        $vil = $_POST['ville'] ;
+    if(isset($_POST['ville_input'])){
+        $vil = $_POST['ville_input'] ;
         //Verification si l'utiliateur a remplis le champ Villle
        if(strlen($vil) > 0 ){
            if(!preg_match('/^[a-zA-Z]*$/',$vil)){
@@ -420,8 +429,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
        }
     }
     //Verif CodePostal
-    if(isset($_POST['Postal'])){
-        $post = $_POST['Postal'] ;
+    if(isset($_POST['codePostal_input'])){
+        $post = $_POST['codePostal_input'] ;
         //Verification si l'utiliateur a remplis le champ CodePostal
         if(strlen($post) > 0 ){
             if(!preg_match('/^[0-9]*$/',$post)){
@@ -493,18 +502,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 if(($_SERVER["REQUEST_METHOD"] == "POST")){
     if (($prenom==TRUE) && ($nom==TRUE)  && ($email==TRUE)  && $sexe==TRUE  && $ville==TRUE  && $codePostal==TRUE  && $adresse==TRUE  && $naissance==TRUE  && $motDePasse==TRUE  && $login==TRUE  && $telephone==TRUE ){
-        echo "submit" ;
-        $prenom = isset($_POST['Prenom']) ? $_POST['Prenom'] : null;
-        $nom_bdd = isset($_POST['Nom']) ? $_POST['Nom'] : null;
-        $email_bdd = isset($_POST['email']) ? $_POST['email'] : null;
+        $prenom_bdd = isset($_POST['prenom_input']) ? $_POST['prenom_input'] : null;
+        $nom_bdd = isset($_POST['nom_input']) ? $_POST['nom_input'] : null;
+        $email_bdd = isset($_POST['email_input']) ? $_POST['email_input'] : null;
         $sexe_bdd = isset($_POST['sexe']) ? $_POST['sexe'] : null;
-        $ville_bdd = isset($_POST['ville']) ? $_POST['ville'] : null;
-        $codePostal_bdd = isset($_POST['Postal']) ? $_POST['Postal'] : null;
-        $adresse_bdd = isset($_POST['adresse']) ? $_POST['adresse'] : null;
-        $naissance_bdd = isset($_POST['naissance']) ? date('Y-m-d', strtotime($_POST['naissance'])) : null;
+        $ville_bdd = isset($_POST['ville_input']) ? $_POST['ville_input'] : null;
+        $codePostal_bdd = isset($_POST['codePostal_input']) ? $_POST['codePostal_input'] : null;
+        $adresse_bdd = isset($_POST['adresse_input']) ? $_POST['adresse_input'] : null;
+        $naissance_bdd = isset($_POST['naissance_input']) ? date('Y-m-d', strtotime($_POST['naissance_input'])) : null;
         $motDePasse_bdd = isset($_POST['mdp_input']) ? $_POST['mdp_input'] : null;
         $login_bdd = isset($_POST['login_input']) ? $_POST['login_input'] : null;
-        $telephone_bdd = isset($_POST['telephone']) ? $_POST['telephone'] : null;
+        $telephone_bdd = isset($_POST['tel_input']) ? $_POST['tel_input'] : null;
 
         try {
             $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
@@ -512,7 +520,6 @@ if(($_SERVER["REQUEST_METHOD"] == "POST")){
             $stmt = $conn->prepare($sql);
             $stmt->execute([$login_bdd, $motDePasse_bdd, $nom_bdd, $prenom_bdd, $sexe_bdd, $email_bdd, $naissance_bdd, $adresse_bdd, $codePostal_bdd, $ville_bdd, $telephone_bdd]);
             move_to() ;
-            echo "eroor move_to" ;
             exit();
         } catch (PDOException $e) {
             echo "Erreur !: " . $e->getMessage() . "<br/>";
