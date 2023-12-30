@@ -40,11 +40,13 @@
                     $ingredients = $_GET['ingredients'];
                 }
 
+                echo "<h3>Séléctionnez un ou plusieurs ingrédients (en appuyant sur CTRL)</h3>";
                 echo "<select name='ingredients' id='ingredients' class='selector' multiple>";
                 foreach ($result as $ingredient) {
                     echo "<option value='" . $ingredient['nom'] . "'>" . $ingredient['nom'] . "</option>";
                 }
                 echo "</select>";
+                
 
             } catch (PDOException $e) {
                 echo "Erreur : " . $e->GETMessage();
@@ -52,8 +54,13 @@
         ?>
     </form>
 
+    <div>
+        <h3>Faite une recherche par ingredients classé par catégorie <a href="hierarchie.php">ici</a></h3>
+    </div>
+
     <!-- Liste des ingredients selectionnés -->
     <div id="ingredientsListContainer">
+        <h2>Ingrédients sélectionnés</h2>
         <ul id="ingredientsList">
         </ul>
     </div>

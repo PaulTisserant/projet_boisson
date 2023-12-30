@@ -140,15 +140,6 @@ nav ul li a.active {
     cursor: pointer;
 }
 
-#ingredientsList li .deleteButton {
-    float: right;
-    margin-right: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #ab3333;
-    color: #fff;
-    cursor: pointer;
-}
 
 #ingredientsList li p {
     float: left;
