@@ -1,0 +1,40 @@
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #d4d2d2;
+    padding: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+
+    margin-left: 20%;
+    margin-right: 20%;
+    border: 3px solid #ab3333 ;
+    border-radius: 40px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+}
+
+nav ul li {
+    margin-right: 60px;
+}
+
+
+nav ul li a:hover {
+    color: #ab3333;
+}
+
+nav ul li a.active {
+    color: #ab3333;
+}

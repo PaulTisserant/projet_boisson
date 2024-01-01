@@ -6,6 +6,8 @@
     <title>Inscription</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" type="text/css" href="inscription.css">
+    <link rel="stylesheet" type="text/css" href="navBar.css">
+
 </head>
 <body>
     <?php
@@ -288,15 +290,8 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
 
 
 </script>
+<?php  include "navBar.php"?>
 
-<nav>
-        <ul>
-            <li><a href="index.php">Accueil</a></li>
-            <li><a href="recettes.php">Recettes</a></li>
-            <li><a href="inscription.php">Inscription</a></li>
-            <li><a href="connexion.php">Connexion</a></li>
-        </ul>
-    </nav>
     <div class="conteneur" style="align-self: center;">
 
 

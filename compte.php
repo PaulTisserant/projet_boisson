@@ -4,23 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="compte.css">
+    <link rel="stylesheet" type="text/css" href="navBar.css">
+
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <title>Compte</title>
 </head>
 <body>
 
-<nav>
-        <ul>
-            <li><a href="index.php">Accueil</a></li>
-            <li><a href="recettes.php">Recettes</a></li>
-            <li><a href="inscription.php">Inscription</a></li>
-            <li><a href="connexion.php">Connexion</a></li>
-        </ul>
-    </nav>
+<?php  include_once  "navBar.php"?>
 <?php 
 session_start();
-include "fonction.php";
+include_once "fonction.php";
 ?>
 </body>
 
@@ -226,8 +221,12 @@ function afficherCadre(champ) {
                 bouton.setAttribute('class', 'but')
                 bouton.textContent = 'Valider';
                 bouton.onclick = function() {
-                    validerChamp(champ);
-                    };
+                    if(handleBlurNom() == true){
+                        validerChamp(champ);
+                    }else{
+                        alert("Veuillez saisir un nom valide");
+                    }
+                };
                     input.onblur = function() {
                     handleBlurNom() ;
                 };
@@ -244,8 +243,12 @@ function afficherCadre(champ) {
                 bouton.setAttribute('class', 'but')
                 bouton.textContent = 'Valider';
                 bouton.onclick = function() {
-                    validerChamp(champ);
-                    };
+                    if(handleBlurPrenom() == true){
+                        validerChamp(champ);
+                    }else{
+                        alert("Veuillez saisir un Prenom valide");
+                    }
+                };
                     input.onblur = function() {
                     // Code à exécuter lorsque l'input perd le focus
                     handleBlurPrenom() ;
@@ -263,7 +266,11 @@ function afficherCadre(champ) {
                 bouton.setAttribute('class', 'but')
                 bouton.textContent = 'Valider';
                 bouton.onclick = function() {
+                    if(handleBlurEmail() == true){
                     validerChamp(champ);
+                    }else{
+                        alert("Veuillez saisir un Email valide");
+                    }
                     };
                     input.onblur = function() {
                     // Code à exécuter lorsque l'input perd le focus
@@ -285,7 +292,11 @@ function afficherCadre(champ) {
                 bouton.textContent = 'Valider';
 
                 bouton.onclick = function() {
-                    validerChamp(champ);
+                    if(handleBlurTel() == true){
+                        validerChamp(champ);
+                    }else{
+                        alert("Veuillez saisir un Numero de telephone valide");
+                    }
                     };
                     input.onblur = function() {
                     // Code à exécuter lorsque l'input perd le focus
@@ -305,7 +316,11 @@ function afficherCadre(champ) {
                 bouton.setAttribute('class', 'but')
                 bouton.textContent = 'Valider';
                 bouton.onclick = function() {
-                    validerChamp(champ);
+                    if(handleBlurVille() == true){
+                        validerChamp(champ);
+                    }else{
+                        alert("Veuillez saisir un nom de Ville valide");
+                    }
                     };
                     input.onblur = function() {
                     // Code à exécuter lorsque l'input perd le focus
@@ -325,7 +340,11 @@ function afficherCadre(champ) {
                 bouton.setAttribute('class', 'but')
                 bouton.textContent = 'Valider';
                 bouton.onclick = function() {
-                    validerChamp(champ);
+                    if(handleBlurAdresse() == true){
+                        validerChamp(champ);
+                    }else{
+                        alert("Veuillez saisir une adresse valide");
+                    }
                     };
                     input.onblur = function() {
                     // Code à exécuter lorsque l'input perd le focus
@@ -346,7 +365,11 @@ function afficherCadre(champ) {
                 bouton.setAttribute('class', 'but')
                 bouton.textContent = 'Valider';
                 bouton.onclick = function() {
-                    validerChamp(champ);
+                    if(handleBlurCodePostal() == true){
+                        validerChamp(champ);
+                    }else{
+                        alert("Veuillez saisir un code postal valide");
+                    }
                     };
                     input.onblur = function() {
                     // Code à exécuter lorsque l'input perd le focus
@@ -364,7 +387,11 @@ function afficherCadre(champ) {
                 bouton.setAttribute('class', 'but')
                 bouton.textContent = 'Valider';
                 bouton.onclick = function() {
-                    validerChamp(champ);
+                    if(handleBlurLogin() == true){
+                        validerChamp(champ);
+                    }else{
+                        alert("Veuillez saisir un login valide");
+                    }
                     };
                     input.onblur = function() {
                     // Code à exécuter lorsque l'input perd le focus
@@ -382,7 +409,11 @@ function afficherCadre(champ) {
                 bouton.setAttribute('class', 'but')
                 bouton.textContent = 'Valider';
                 bouton.onclick = function() {
-                    validerChamp(champ);
+                    if(handleBlurMdp() == true){
+                        validerChamp(champ);
+                    }else{
+                        alert("Veuillez saisir un cMot de passe valide");
+                    }
                     };
                     input.onblur = function() {
                     // Code à exécuter lorsque l'input perd le focus
@@ -420,6 +451,7 @@ function afficherCadre(champ) {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 console.log(xhr.responseText);
+                location.reload(true) ;
             }
         };
 
@@ -427,17 +459,11 @@ function afficherCadre(champ) {
         xhr.open("POST", "modificationBdd.php", true);
 
         // Définir l'en-tête de la requête pour indiquer que c'est une requête POST
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                switch (champ) {
-            case 'nom':
-                console.log("envoyer nom");
-                xhr.send("nom=" + encodeURIComponent(nouveauNom));
-                
-                break;
-        
-            default:
-                break;
-        }
+        xhr.send(champ+"=" + encodeURIComponent(nouveauNom)); 
+
+
 
 
 
@@ -455,6 +481,7 @@ function afficherCadre(champ) {
 
         // Cacher le cadre après validation (vous pouvez ajuster cette logique)
         document.querySelector('.cadre').remove();
+    
     }
 
 

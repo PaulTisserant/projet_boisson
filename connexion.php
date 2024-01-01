@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
     <link rel="stylesheet" type="text/css" href="connexion.css">
+    <link rel="stylesheet" type="text/css" href="navBar.css">
 
 </head>
 <body>
@@ -45,14 +46,7 @@
         }
     }   
     ?>
-<nav>
-        <ul>
-            <li><a href="index.php">Accueil</a></li>
-            <li><a href="recettes.php">Recettes</a></li>
-            <li><a href="inscription.php">Inscription</a></li>
-            <li><a href="connexion.php">Connexion</a></li>
-        </ul>
-    </nav>
+<?php  include "navBar.php" ?>
 <div class="conteneur" >
 <form method="post" action="#">
         <h1 class="conn">Se connecter </h1>
