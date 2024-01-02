@@ -24,7 +24,6 @@ include_once "fonction.php";
 <td>
 
 
-
 <div class="conteneur" > 
 <h1 >Information Utilisateur</h1>
 <?php 

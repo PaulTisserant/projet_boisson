@@ -47,6 +47,9 @@
     }   
     ?>
 <?php  include "navBar.php" ?>
+
+
+<section>
 <div class="conteneur" >
 <form method="post" action="#">
         <h1 class="conn">Se connecter </h1>
@@ -58,13 +61,14 @@
     ?>
     </br>
     <label >Login :</label>
-    <input name="login" type="text" name="login" >
+    <input name="login" type="text" name="login" placeholder="Login">
     </br>
     <label >Mot de passe :</label>
-    <input name="mdp" type="password" name="login" >
+    <input name="mdp" type="password" name="login" placeholder="Mot de passe" >
     </br>
     <button id="button"  name="submit" type="submit">Se connecter</button>
 </form>
 </div>
+</section>
 </body>
 </html>
