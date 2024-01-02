@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="compte.css">
-    <link rel="stylesheet" type="text/css" href="navBar.css">
+    <link rel="stylesheet" type="text/css" href="header.css">
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<?php  include_once  "navBar.php"?>
+<?php  include_once  "header.php"?>
 <?php 
 session_start();
 include_once "fonction.php";

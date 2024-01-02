@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion</title>
     <link rel="stylesheet" type="text/css" href="connexion.css">
-    <link rel="stylesheet" type="text/css" href="navBar.css">
+    <link rel="stylesheet" type="text/css" href="header.css">
 
 </head>
 <body>
@@ -46,7 +46,7 @@
         }
     }   
     ?>
-<?php  include "navBar.php" ?>
+<?php  include "header.php" ?>
 
 
 <section>
@@ -67,6 +67,8 @@
     <input name="mdp" type="password" name="login" placeholder="Mot de passe" >
     </br>
     <button id="button"  name="submit" type="submit">Se connecter</button>
+    </br>
+    <p>Vous n'avez pas de compte ? <a href="inscription.php">S'inscrire ici</a></p>
 </form>
 </div>
 </section>

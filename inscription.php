@@ -6,7 +6,7 @@
     <title>Inscription</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" type="text/css" href="inscription.css">
-    <link rel="stylesheet" type="text/css" href="navBar.css">
+    <link rel="stylesheet" type="text/css" href="header.css">
 
 </head>
 <body>
@@ -290,7 +290,7 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
 
 
 </script>
-<?php  include "navBar.php"?>
+<?php  include "header.php"?>
 
     <div class="conteneur" style="align-self: center;">
 
