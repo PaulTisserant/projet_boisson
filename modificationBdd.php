@@ -1,33 +1,33 @@
 <?php 
-include "fonction.php" ;
+include "fonctions.php" ;
 function ModifierSexe($sexe){
-    try {
-        $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
+    if(verifConn()){
+        try {
+            $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
 
-        // Préparer la requête SQL UPDATE
-        $sql = "UPDATE utilisateurs SET sexe = :nouveau_sexe WHERE user_id = :user_id";
-        $stmt = $conn->prepare($sql);
-    
-        // Binder les valeurs des paramètres
-        $stmt->bindParam(':nouveau_sexe', $sexe, PDO::PARAM_STR);
-        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    
-        // Exécuter la requête
-        $stmt->execute();
-    
-        // Vérifier si la mise à jour a réussi
-        if ($stmt->rowCount() > 0) {
-            echo "Le sexe a été mis à jour avec succès.";
-        } else {
-            echo "Aucune mise à jour effectuée. L'ID de l'utilisateur pourrait ne pas exister.";
+            // Préparer la requête SQL UPDATE
+            $sql = "UPDATE users SET gender = ? WHERE user_id = ?";
+            $stmt = $conn->prepare($sql);
+        
+            // Binder les valeurs des paramètres
+
+        
+            // Exécuter la requête
+            $stmt->execute([$sexe,$_SESSION['user_id']]);
+        
+            // Vérifier si la mise à jour a réussi
+            if ($stmt->rowCount() > 0) {
+                echo "Le sexe a été mis à jour avec succès.";
+            } else {
+                echo "Aucune mise à jour effectuée. L'ID de l'utilisateur pourrait ne pas exister.";
+            }
+        } catch (PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
+        } finally {
+            $conn = null;
         }
-    } catch (PDOException $e) {
-        echo "Erreur : " . $e->getMessage();
-    } finally {
-        $conn = null;
+
     }
-
-
 
 }
 function ModifierNom($nom){
@@ -280,27 +280,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $sexe = $_POST['sexe'];
             ModifierSexe($sexe) ;
         }
-        if(isset($_POST['nom'])){
+        if(isset($_POST['nom']) && verifNom($_POST['nom'])){
             $nom = $_POST['nom'];
             ModifierNom($nom) ;
         }
-        if(isset($_POST['prenom'])){
+        if(isset($_POST['prenom']) && verifPrenom($_POST['prenom'])){
             $prenom = $_POST['prenom'];
             ModifierPrenom($prenom) ;
         }
-        if(isset($_POST['email'])){
+        if(isset($_POST['email']) && verifMail($_POST['email'])){
             $email = $_POST['email'];
             ModifierEmail($email) ;
         }
-        if(isset($_POST['tel'])){
+        if(isset($_POST['tel']) && verifTel($_POST['tel'])){
             $tel = $_POST['tel'];
             ModifierTel($tel) ;
         }
-        if(isset($_POST['ville'])){
+        if(isset($_POST['ville']) && verifVille($_POST['ville'])){
             $ville = $_POST['ville'];
             ModifierVille($ville) ;
         }
-        if(isset($_POST['codePostal'])){
+        if(isset($_POST['codePostal']) && verifCodePostal($_POST['codePostal'])){
             $codePostal = $_POST['codePostal'];
             ModifierCodePostal($codePostal) ;
         }
@@ -308,17 +308,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $adresse = $_POST['adresse'];
             ModifierAdresse($adresse) ;
         }
-        if(isset($_POST['login'])){
+        if(isset($_POST['login']) && verifLogin($_POST['login'])){
             $login = $_POST['login'];
             ModifierLogin($login) ;
         }
-        if(isset($_POST['mdp'])){
+        if(isset($_POST['mdp']) && verifMdp($_POST['mdp'])){
             $mdp = $_POST['mdp'];
             ModifierMdp($mdp) ;
         }
     }else{
-
-
     echo "no http" ;
     }
 }

@@ -20,7 +20,7 @@ exit ;
 
 session_start();
 
-include "fonction.php" ;
+include "fonctions.php" ;
 
 if(verifConn()){
 deconnexion() ;
@@ -370,33 +370,32 @@ $mdp_UpperError = FALSE ;
 
 
 
+
 //Verification des donnees
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     //Verif NOM
     if(isset($_POST['nom_input'])){
          $pre = $_POST['nom_input'] ;
          //Verification si l'utiliateur a remplis le champ Nom
-        if(strlen($pre) > 0 ){
-            if(preg_match('/\d/',$pre)){
+         if(!verifNom($pre)){
                 $nom = FALSE ;
             }
-        }
+        
     }
     //Verif PRENOM
     if(isset($_POST['prenom_input'])){
         $pre = $_POST['prenom_input'] ;
         //Verification si l'utiliateur a remplis le champ Prenom
-       if(strlen($pre) > 0 ){
-           if(preg_match('/\d/',$pre)){
+           if(!verifPrenom($pre)){
                $prenom = FALSE ;
            }
-       }
+       
     }
     //Verif EMAIL
     if(isset($_POST['email_input'])){
         $mail = $_POST['email_input'] ;
         //Verification si l'utiliateur a remplis le champ Email
-       if(preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i',$var_mail ))
+       if(!verifMail($var_mail))
        {
             $email = FALSE ;
        }
@@ -405,18 +404,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(isset($_POST['tel_input'])){
         $tele = $_POST['tel_input'] ;
         //Verification si l'utiliateur a remplis le champ CodePostal
-        if(strlen($tele) > 0 ){
-            if(!preg_match('/^[0-9]*$/',$tele)){
+        if(!verifTel($tele)){
                 $telephone = FALSE ;
             }
-        }
+        
     }
     //Verif VILLE
     if(isset($_POST['ville_input'])){
         $vil = $_POST['ville_input'] ;
         //Verification si l'utiliateur a remplis le champ Villle
        if(strlen($vil) > 0 ){
-           if(!preg_match('/^[a-zA-Z]*$/',$vil)){
+           if(!verifVille($vil)){
                $ville = FALSE ;
            }
        }
@@ -426,7 +424,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $post = $_POST['codePostal_input'] ;
         //Verification si l'utiliateur a remplis le champ CodePostal
         if(strlen($post) > 0 ){
-            if(!preg_match('/^[0-9]*$/',$post)){
+            if(!verifCodePostal($post)){
                 $codePostal = FALSE ;
             }
         }

@@ -15,7 +15,7 @@
 <?php  include_once  "header.php"?>
 <?php 
 session_start();
-include_once "fonction.php";
+include_once "fonctions.php";
 ?>
 </body>
 
@@ -102,7 +102,7 @@ echo "
 
 <tr>
     <td>
-    <p id = 'prenom'> Prenom : <span class='info'> $first_name </span>
+    <p> Prenom : <span class='info'> $first_name </span>
     </td>
     <td class='butCell'> 
     <button class='but' onclick=\"afficherCadre('prenom')\">Modifier Prenom</button> </p> 
@@ -114,7 +114,7 @@ echo "
 <p> Civilite : <span class='info'> $gender  </span> </p> 
 </td>
 <td class='butCell'>
-<button class='but' onclick=\"afficherCadre('email')\">Modifier Civilite</button>
+<button class='but' onclick=\"afficherCadre('sexe')\">Modifier Civilite</button>
 </td>
 </tr>
 
@@ -205,7 +205,57 @@ function afficherCadre(champ) {
                 label.textContent = champ.charAt(0).toUpperCase() + champ.slice(1)+ " : ";
 
         switch (champ) {
+            case "sexe":
+                var radioContainer = document.createElement('div');
+                var radio1 = document.createElement('input');
+                        radio1.type = 'radio';
+                        radio1.name = champ;
+                        radio1.value = 'H';
+                        radio1.id = champ;
+                var label_rad1 = document.createElement('label');
+                label_rad1.setAttribute('for', champ);
+                label_rad1.setAttribute('id', champ);      
+                label_rad1.textContent = "Homme"    ;             
+                var radio2 = document.createElement('input');
+                    radio2.type = 'radio';
+                    radio2.name = champ;
+                    radio2.value = 'F';
+                    radio2.id = champ;
+                var label_rad2 = document.createElement('label');
+                label_rad2.setAttribute('for', champ);
+                label_rad2.setAttribute('id', champ);  
+                label_rad2.textContent = "Femme";
+                // Créer le bouton
+                var bouton = document.createElement('button');
+                bouton.setAttribute('class', 'but')
+                bouton.setAttribute('class', 'but')
+                bouton.textContent = 'Valider';
+                bouton.onclick = function() {
+                        if(verifGender(champ)){
+                            validerChamp(champ);
+                        }else{
+                            alert('Veuillez choisir une civilite valide');
+                        }
+                };
+                // Ajouter l'étiquette, le champ d'entrée et le bouton au cadre
+                cadre.appendChild(label);
+                radioContainer.appendChild(radio1);
+                radioContainer.appendChild(label_rad1);
 
+                radioContainer.appendChild(radio2);
+                radioContainer.appendChild(label_rad2);
+                cadre.appendChild(radioContainer) ;
+                cadre.appendChild(bouton);
+
+                // Ajouter le cadre au corps de la page
+                if(document.querySelector('.cadre')!== null ){
+                    document.querySelector('.cadre').remove();
+                }
+                document.getElementById('mod').appendChild(cadre);
+                // Afficher le cadre
+                cadre.style.display = 'grid';
+                return ;
+                break;
 
             case "nom":
 
@@ -339,16 +389,8 @@ function afficherCadre(champ) {
                 bouton.setAttribute('class', 'but')
                 bouton.textContent = 'Valider';
                 bouton.onclick = function() {
-                    if(handleBlurAdresse() == true){
-                        validerChamp(champ);
-                    }else{
-                        alert("Veuillez saisir une adresse valide");
-                    }
+                    validerChamp(champ);
                     };
-                    input.onblur = function() {
-                    // Code à exécuter lorsque l'input perd le focus
-                    handleBlurAdresse() ;
-                };
             break;
             case "codePostal":
 
@@ -438,11 +480,32 @@ function afficherCadre(champ) {
         // Afficher le cadre
         cadre.style.display = 'grid';
     }
+    function verifGender(champ){
+        var radios = document.getElementsByName(champ);
+            for (var i = 0; i < radios.length; i++) {
+                //Recherche de l'element selectionné
+                if (radios[i].checked) {
+                    var nouvelleVal = radios[i].value;
+                    return true ;
+                }
+            }
+        return false ;
+    }
     function validerChamp(champ) {
-        var input_name =  champ + "_input" ; 
-        // Récupérer la valeur du champ d'entrée
-        var nouveauNom = document.getElementById(input_name).value;
-
+        if (champ == "sexe") {
+            var radios = document.getElementsByName(champ);
+            for (var i = 0; i < radios.length; i++) {
+                //Recherche de l'element selectionné
+                if (radios[i].checked) {
+                    var nouvelleVal = radios[i].value;
+                    break; 
+                }
+            }
+        }else{
+            var input_name =  champ + "_input" ; 
+            // Récupérer la valeur du champ d'entrée
+            var nouvelleVal = document.getElementById(input_name).value;
+        }   
         // Créer une instance de l'objet XMLHttpRequest
         var xhr = new XMLHttpRequest();
 
@@ -460,23 +523,11 @@ function afficherCadre(champ) {
         // Définir l'en-tête de la requête pour indiquer que c'est une requête POST
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-        xhr.send(champ+"=" + encodeURIComponent(nouveauNom)); 
+        console.log(nouvelleVal) ;
+        xhr.send(champ+"=" + encodeURIComponent(nouvelleVal)); 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-        // Faire quelque chose avec la nouvelle valeur (ici, affichage dans la console)
-        console.log("Nouveau Nom:", nouveauNom);
 
         // Cacher le cadre après validation (vous pouvez ajuster cette logique)
         document.querySelector('.cadre').remove();
@@ -725,15 +776,6 @@ function afficherCadre(champ) {
             console.log("error MDP");
             mdp.style.color = "red";
             return false;
-        } else if (!(mdp_confirm_input.value === mdp_input.value)) {
-            if (!mdp.contains(label_mdp)) {
-                label_mdp.textContent = "(La confirmation du mot de passe ne correspond pas)" ;
-                mdp.appendChild(label_mdp);
-            }
-            console.log("error MDP");
-            mdp.style.color = "red";
-            return false;
-
         }else{
             if (mdp.contains(label_mdp)) {
                 mdp.removeChild(label_mdp);

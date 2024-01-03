@@ -10,7 +10,7 @@
 </head>
 <body>
     <?php 
-    include "fonction.php";
+    include "fonctions.php";
     $sub = true ;
     session_start();
 

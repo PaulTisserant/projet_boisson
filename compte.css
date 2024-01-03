@@ -46,10 +46,8 @@ body {
     align-items: center;
     text-align: left;
     padding-left: 100px;
-    margin-top: -10 ;
 
 }
 .but:hover{
     background-color: #7c2121;
-
 }

@@ -1,5 +1,5 @@
 <?php 
-include_once "fonction.php" ;
+include_once "fonctions.php" ;
 echo '
 <header>
     <div class= "logo">

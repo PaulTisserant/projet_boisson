@@ -32,7 +32,7 @@
      </a>
 
 <?php 
-include_once "fonction.php";
+include_once "fonctions.php";
 if(verifConn()){
     echo "
     <a href='compte.php'>
