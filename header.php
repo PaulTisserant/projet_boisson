@@ -14,9 +14,9 @@ echo '
     </div>
     <div class="headRight">
     <div class="connect">
-        <a href="panier.php">
-        <img class="panier" src="Photos/panier.png" alt="panier">
-        <span class="text" >Panier </span>   </a>
+        <a href="favoris.php">
+        <img class="panier" src="Photos/favoris.png" alt="panier">
+        <span class="text" >Favoris </span>   </a>
     </div>
 
                 ';

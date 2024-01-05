@@ -21,12 +21,12 @@
         </div>
      </div>
 </a>
-    <a href="panier.php">
+    <a href="favoris.php">
      <div class='card'>
         <div class='cardContent'>
 
-        <h2>Votre Panier</h2>
-        <img src='Photos/panier.png' alt='default'>
+        <h2>Vos Favoris</h2>
+        <img src='Photos/favoris.png' alt='default'>
         </div>
      </div>
      </a>

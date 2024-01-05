@@ -7,6 +7,8 @@
         rel="stylesheet" 
         href="recettes.css"
     >
+    <link rel="stylesheet" type="text/css" href="header.css">
+
     <style>
         /* Ajoutez du CSS pour styliser la liste déroulante des suggestions */
         #autocompleteList {
@@ -32,7 +34,7 @@
 </head>
 <body>
 
-    <?php //include "header.php";?>
+    <?php include "header.php";?>
 
     <h1>Recettes</h1>
 
