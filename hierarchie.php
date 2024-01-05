@@ -95,6 +95,16 @@
             margin: 10px 0;
         }
 
+        .card a {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+            color: black;
+        }
+
 
     </style>
 </head>
@@ -136,11 +146,16 @@
                 echo "<h2>Voici les recettes correspondant à votre recherche</h2>";
 
                 foreach ($result as $recipe) {
+                    // carte clickable qui redirige vers la page de la recette
+                    
                     echo "<div class='card'>";
+                    
                     echo "<h2>" . $recipe['title'] . "</h2>";
                     echo "<img src='Photos/default.png' alt='" . $recipe['title'] . "'>";
                     echo "<p>" . $recipe['food_index'] . "</p>";
+                    echo "<a href='recette.php?id=" . $recipe['recipe_id'] . "'>Plus d'infos</a>";
                     echo "</div>";
+                    
                 }
             }
 
@@ -267,6 +282,7 @@
             
 
         });
+
 
 
     </script>
