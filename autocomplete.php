@@ -12,13 +12,19 @@
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Extraire les valeurs pertinentes
+    // Extrait les valeurs pertinentes
     $suggestions = array_map(function ($row) {
         return $row['nom'] ?? $row['title'] ?? null;
     }, $result);
 
-    // Retourner les 5 premières suggestions au format JSON
+    // Retourne les 5 premières suggestions au format JSON
     $suggestions = array_slice($suggestions, 0, 5);
+
+    // enleve se qui se trouvent après une parenthèse ouvrante
+    $suggestions = array_map(function ($suggestion) {
+        return preg_replace('/\(.*$/', '', $suggestion);
+    }, $suggestions);
+
     echo json_encode($suggestions);
 
 ?>

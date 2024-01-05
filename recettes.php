@@ -37,7 +37,7 @@
     <h1>Recettes</h1>
 
     <!-- Bar de recherche -->
-    <form action="recettes.php" method="GET">
+    <form action="recettes.php" method="GET" id="form">
         <input type="text" name="search" placeholder="Rechercher une recette" class="searchBar">
         <!-- Liste déroulante des suggestions -->
         <ul id="autocompleteList"></ul>
@@ -69,6 +69,7 @@
             }
         ?>
     </form>
+    
 
     <div>
         <h3>Faite une recherche par ingredients classé par catégorie <a href="hierarchie.php">ici</a></h3>
@@ -175,12 +176,10 @@
                     selectedOptions.push(options[i].value);
                 }
             }
-            console.log(selectedOptions);
             localStorage.setItem('ingredientsList', JSON.stringify(selectedOptions));
             
             updateIngredientsList();
 
-            console.log(localStorage.getItem('ingredientsList'));
         });
 
         // Appel initial pour afficher la liste au chargement de la page
@@ -217,6 +216,16 @@
                     suggestions.forEach(function (suggestion) {
                         var listItem = document.createElement("li");
                         listItem.textContent = suggestion;
+
+                        // Attacher le gestionnaire d'événements au nouvel élément <li>
+                        listItem.addEventListener("click", function () {
+                            var selectedSuggestion = listItem.textContent;
+                            document.querySelector(".searchBar").value = selectedSuggestion;
+
+                            // Masquer la liste déroulante après la sélection
+                            autocompleteList.style.display = "none";
+                        });
+
                         autocompleteList.appendChild(listItem);
                     });
                 } else {
@@ -225,22 +234,9 @@
                 }
             }
 
-            // Gestionnaire d'événements pour la sélection d'une suggestion
-            document.addEventListener("click", function (event) {
-                if (event.target.tagName === "li" && event.target.parentNode.id === "autocompleteList") {
-                    var selectedSuggestion = event.target.textContent;
-                    console.log(selectedSuggestion);
-                    document.querySelector(".searchBar").value = selectedSuggestion;
 
-                    // Masquer la liste déroulante après la sélection
-                    document.getElementById("autocompleteList").style.display = "none";
-                }
-            });
 
-            // Gestionnaire d'événements pour masquer la liste déroulante lorsque le champ de recherche n'est pas selectionné (!focus)
-            document.querySelector(".searchBar").addEventListener("blur", function () {
-                document.getElementById("autocompleteList").style.display = "none";
-            });
+
         });
 
 
