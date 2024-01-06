@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recette</title>
     <link rel="stylesheet" href="recettes.css">
     <link rel="stylesheet" type="text/css" href="header.css">
@@ -41,10 +40,12 @@
             background-color: #ab3333;
             border: black 1px solid;
             color: white;
+            width: 100px;
+            height: 100px;
         }
         .bouton img {
             filter: brightness(100) ;
-
+            width: 100%;
         }
     </style>
 </head>
@@ -52,10 +53,33 @@
 <body>
 
     <?php include "header.php";?>
+<script>
+function modifierFav($id){
+    var xhr = new XMLHttpRequest();
+
+        // Définir la fonction de rappel pour gérer la réponse
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log(xhr.responseText);
+                location.reload(true) ;
+            }
+        };
+
+        // Ouvrir une requête POST vers le fichier PHP avec la fonction à appeler
+        xhr.open("POST", "modifFavoris.php", true);
+
+        // Définir l'en-tête de la requête pour indiquer que c'est une requête POST
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        xhr.send("modifFav"+"=" + encodeURIComponent($id));
+}
+
+
+</script>
 
 
     <?php 
-
+session_start();
         require_once "fonctions.php";
         try {
             $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
@@ -83,13 +107,45 @@
             echo "<h3> Instruction : </h3>";
             echo "<p>" . $result['preparation'] . "</p>";
             echo '
-            <div class="bouton">
-            <img src="Photos/favoris.png" >
-            echo "</div>";
-        
-            echo "</div>" ;
-            ' ;
+            <div class="bouton" onmouseover="changerImage(true)" onmouseout="changerImage(false)" onclick="modifierFav( ' .  $_GET['id']  .')" >';
+            if(isFavorite($_GET['id'])){
+                echo' <img id = "img" src="Photos/favoris_bis.png" > 
+                <script>
+                function changerImage(bool){
+                    var img = document.getElementById("img");
+                    if(!bool){
+                    img.src = "Photos/favoris_bis.png"
+                    }else{
+                        img.src = "Photos/favoris.png"
+                    }
+                }
+                </script>                 
+                ' ;
+                               
+            }else{
+            echo'
+            <img id = "img" src="Photos/favoris.png" >
+            <script>
+            function changerImage(bool){
+                var img = document.getElementById("img");
+                if(bool){
+                img.src = "Photos/favoris_bis.png"
+                }else{
+                    img.src = "Photos/favoris.png"
+                }
+            }
 
+            </script> '; 
+        } 
+        echo'              
+            </div>
+            </div> ' ;'
+
+
+
+
+
+            ' ;
             // si l'utilisateur est connecté, on affiche le bouton pour ajouter la recette en favoris
             if (verifConn()) {
                 echo "<form action='recette.php?id=" . $_GET['id'] . "' method='POST'>";
