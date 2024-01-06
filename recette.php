@@ -146,22 +146,6 @@ session_start();
 
 
             ' ;
-            // si l'utilisateur est connecté, on affiche le bouton pour ajouter la recette en favoris
-            if (verifConn()) {
-                echo "<form action='recette.php?id=" . $_GET['id'] . "' method='POST'>";
-                echo "<input type='hidden' name='recipe_id' value='" . $_GET['id'] . "'>";
-                echo "<input type='submit' value='Ajouter la recette aux favoris' name='favoris'>";
-                echo "</form>";
-
-                echo "Utilisateur id : " . $_SESSION['user_id'] . "<br>";
-            } else {
-            }
-
-            
-            
-
-            
-
         } catch (PDOException $e) {
             echo "Erreur : " . $e->GETMessage();
         }

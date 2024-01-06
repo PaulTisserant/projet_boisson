@@ -376,43 +376,50 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     //Verif NOM
     if(isset($_POST['nom_input'])){
          $pre = $_POST['nom_input'] ;
-         //Verification si l'utiliateur a remplis le champ Nom
-         if(!verifNom($pre)){
+         if(strlen($var_mail) > 0){
+            //Verification si l'utiliateur a remplis le champ Nom
+            if(!verifNom($pre)){
                 $nom = FALSE ;
             }
-        
+        }
     }
     //Verif PRENOM
     if(isset($_POST['prenom_input'])){
         $pre = $_POST['prenom_input'] ;
         //Verification si l'utiliateur a remplis le champ Prenom
+        if(strlen($pre) > 0){
            if(!verifPrenom($pre)){
                $prenom = FALSE ;
            }
+        }
        
     }
     //Verif EMAIL
     if(isset($_POST['email_input'])){
         $mail = $_POST['email_input'] ;
         //Verification si l'utiliateur a remplis le champ Email
-       if(!verifMail($var_mail))
-       {
-            $email = FALSE ;
-       }
+        if(strlen($var_mail) > 0){
+            if(!verifMail($var_mail))
+            {
+                    $email = FALSE ;
+            }
+        }
     }
     //Verif Telephone
     if(isset($_POST['tel_input'])){
         $tele = $_POST['tel_input'] ;
-        //Verification si l'utiliateur a remplis le champ CodePostal
-        if(!verifTel($tele)){
-                $telephone = FALSE ;
-            }
+        //Verification si l'utiliateur a remplis le champ telephone
+        if(strlen($tele) > 0 ){
+            if(!verifTel($tele)){
+                    $telephone = FALSE ;
+                }
+        }
         
     }
     //Verif VILLE
     if(isset($_POST['ville_input'])){
         $vil = $_POST['ville_input'] ;
-        //Verification si l'utiliateur a remplis le champ Villle
+        //Verification si l'utiliateur a remplis le champ Ville
        if(strlen($vil) > 0 ){
            if(!verifVille($vil)){
                $ville = FALSE ;
@@ -519,6 +526,8 @@ if(($_SERVER["REQUEST_METHOD"] == "POST")){
             }
 
     }
+}else{
+    echo "<h1>Erreur</h1>";
 }
 
 ?>

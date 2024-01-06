@@ -17,17 +17,20 @@ function changerFav($id){
         $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         if(isFavorite($id)){
+            echo "favorite" ;
+
             $stmt = $conn->prepare("DELETE FROM favoriterecipes WHERE recipe_id =? AND user_id =?");
-            $stmt->execute($id,$_SESSION['login']);
+            $stmt->execute([$id,$_SESSION['user_id']]);
             if ($stmt->rowCount() > 0) {   
                 // La recette a bien été supprimée dans les favoris
                 return true ;                
             }else{
                 return false ;
             }
-        }{
+        }else{
+            echo " no favorite" ;
             $stmt = $conn->prepare("INSERT INTO favoriterecipes (recipe_id, user_id) VALUES (?,?)");
-            $stmt->execute($id,$_SESSION['login']);
+            $stmt->execute([$id,$_SESSION['user_id']]);
             if ($stmt->rowCount() > 0) {   
                 // La recette a bien ete ajoutée dans les favoris
                 return true ;                

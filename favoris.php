@@ -13,9 +13,36 @@
 <?php 
 include_once "fonctions.php" ;
 if(verifConn()){
+
+
     echo ' Bonjour ' . $_SESSION['login'] ;
-}
-else{
+    try {
+        $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $stmt = $conn->prepare("SELECT * FROM favoriterecipes JOIN recipes USING(recipe_id) WHERE user_id =?");
+        $stmt->execute([$_SESSION['user_id']]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo '<div class="cardContainer">' ;
+        foreach ($result as $recipe) {
+
+            echo "<div class='card'>";      
+            echo "<h2>" . $recipe['title'] . "</h2>";
+            echo "<img src='Photos/default.png' alt='" . $recipe['title'] . "'>";
+            echo "<p>" . $recipe['food_index'] . "</p>";
+            echo "<a href='recette.php?id=" . $recipe['recipe_id'] . "'>Plus d'infos</a>";
+            echo "</div>";
+        }
+        echo '</div>' ;
+    }catch (PDOException $e) {
+        echo "Erreur : " . $e->GETMessage();
+    }
+
+
+
+
+
+
+}else{
 
     if(isset($_SESSION['favorite'])){
         if(count($_SESSION['favorite'])){
