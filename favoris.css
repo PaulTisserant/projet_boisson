@@ -12,6 +12,8 @@ body {
 
 .card {
     width: 300px;
+    height: 400px;
+
     margin: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -39,4 +41,8 @@ body {
 .card p {
     font-size: 1rem;
     margin: 10px 0;
+}
+a {
+    text-decoration: none;
+    color: inherit;
 }

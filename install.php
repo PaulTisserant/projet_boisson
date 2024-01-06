@@ -19,7 +19,7 @@
   // Fonction pour obtenir l'ID d'un aliment dans la table FoodHierarchy
   function getFoodId($foodName, $conn)
   {
-      $sql = "SELECT food_id FROM FoodHierarchy WHERE name = :foodName";
+      $sql = "SELECT food_id FROM foodhierarchy WHERE name = :foodName";
       $stmt = $conn->prepare($sql);
       $stmt->bindParam(':foodName', $foodName, PDO::PARAM_STR);
       $stmt->execute();
@@ -30,14 +30,18 @@
           return $result['food_id'];
       } else {
           // Insérer l'aliment s'il n'existe pas encore
-          $sql = "INSERT INTO FoodHierarchy (name) VALUES (:foodName)";
+          $sql = "INSERT INTO foodhierarchy (name) VALUES (:foodName)";
           $stmt = $conn->prepare($sql);
           $stmt->bindParam(':foodName', $foodName, PDO::PARAM_STR);
           $stmt->execute();
           return $conn->lastInsertId();
       }
   }
-
+// fonction verifiant si la recette de la boisson a une image
+function hasImage($recipe){
+    $cheminComplet = "Photos/". $recipe. ".jpg";
+    return file_exists($cheminComplet) && is_file($cheminComplet);
+}
   try {
 
     // Connexion à MySQL sans spécifier de base de données
@@ -70,7 +74,7 @@
                     $childId = getFoodId($subCategoryName, $conn);
 
                     // Insérer la relation de hiérarchie
-                    $sql = "INSERT INTO HierarchyRelationships (parent_food_id, child_food_id) VALUES (?, ?)";
+                    $sql = "INSERT INTO hierarchyrelationships (parent_food_id, child_food_id) VALUES (?, ?)";
                     $stmt = $conn->prepare($sql);
                     $stmt->execute([$parentId, $childId]);
                 }
@@ -84,12 +88,18 @@
             $ingredients = $recipe['ingredients'];
             $preparation = $recipe['preparation'];
             $index = implode(', ', $recipe['index']); // Concaténez les éléments de l'index
-
-            // Insérer la recette
-            $sql = "INSERT INTO Recipes (title, ingredients, preparation, food_index) VALUES (?, ?, ?, ?)";
+            if(hasImage($title)){
+                $photo_path = "Photos/". $title. ".jpg";
+                // Insérer la recette avec l'image
+                $sql = "INSERT INTO recipes (title, ingredients, preparation,photo_path, food_index) VALUES (?, ?, ?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute([$title, $ingredients, $preparation,$photo_path, $index]);
+            }else{
+            // Insérer la recette sans l'image
+            $sql = "INSERT INTO recipes (title, ingredients, preparation, food_index) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$title, $ingredients, $preparation, $index]);
-
+            }
         }
 
         $sql = "SELECT title, food_index, ingredients, preparation FROM recipes";

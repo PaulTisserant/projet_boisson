@@ -49,7 +49,7 @@
             width: 100%;
         }
         .butCont{
-            text-align: right;
+            text-align: center;
         }
     </style>
 </head>

@@ -122,7 +122,11 @@
                     }
                 
                     echo "</div>";
+                    if($recipe['photo_path']== NULL){
                     echo "<img src='Photos/default.png' alt='" . $recipe['title'] . "'>";
+                    }else{
+                    echo "<img src='" . $recipe['photo_path']. "' alt='". $recipe['title']. "'>";
+                    }
                     echo "<p>" . $recipe['food_index'] . "</p>";
                     echo "</div>";
                     echo "</a> " ;
