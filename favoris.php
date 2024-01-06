@@ -15,7 +15,6 @@ include_once "fonctions.php" ;
 if(verifConn()){
 
 
-    echo ' Bonjour ' . $_SESSION['login'] ;
     try {
         $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

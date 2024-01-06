@@ -111,13 +111,21 @@
                 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 foreach ($result as $recipe) {
+                    echo "<a href='recette.php?id=" . $recipe['recipe_id']  . "'>";
                     echo "<div class='card'>";
-                    
+                    echo "<div class='titre'>";
                     echo "<h2>" . $recipe['title'] . "</h2>";
+                    if(isFavorite($recipe['recipe_id'])){
+                        echo "<img class='favorite-image' src='Photos/favoris_bis.png' alt='favorite'>";
+                    }else{
+                        echo "<img class='favorite-image' src='Photos/favoris.png' alt='favorite'>";
+                    }
+                
+                    echo "</div>";
                     echo "<img src='Photos/default.png' alt='" . $recipe['title'] . "'>";
                     echo "<p>" . $recipe['food_index'] . "</p>";
-                    echo "<a href='recette.php?id=" . $recipe['recipe_id'] . "'>Plus d'infos</a>";
                     echo "</div>";
+                    echo "</a> " ;
                 }
 
                 

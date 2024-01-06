@@ -37,6 +37,7 @@
             text-align: center; 
         }
         .bouton{
+            display: inline-block;
             background-color: #ab3333;
             border: black 1px solid;
             color: white;
@@ -46,6 +47,9 @@
         .bouton img {
             filter: brightness(100) ;
             width: 100%;
+        }
+        .butCont{
+            text-align: right;
         }
     </style>
 </head>
@@ -106,7 +110,7 @@ session_start();
             echo "</ul>" ;
             echo "<h3> Instruction : </h3>";
             echo "<p>" . $result['preparation'] . "</p>";
-            echo '
+            echo '<div class="butCont"> 
             <div class="bouton" onmouseover="changerImage(true)" onmouseout="changerImage(false)" onclick="modifierFav( ' .  $_GET['id']  .')" >';
             if(isFavorite($_GET['id'])){
                 echo' <img id = "img" src="Photos/favoris_bis.png" > 
@@ -138,6 +142,7 @@ session_start();
             </script> '; 
         } 
         echo'              
+            </div>
             </div>
             </div> ' ;'
 
