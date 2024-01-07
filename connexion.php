@@ -18,7 +18,7 @@
 
     if(verifConn()){
         echo "connect" ;
-        header('Location: compte.php');
+        header('Location: ./compte.php');
         exit() ;
     }else{
         if ( isset($_POST['mdp']) && isset($_POST['login'])) {
@@ -36,7 +36,7 @@
                     $sub = true ;
                     $_SESSION['user_id'] = $userData['user_id'];
                     $_SESSION['login'] =  $log ;
-                    header('Location: compte.php');
+                    header('Location: ./compte.php');
                     exit() ;
                 }
             } catch (PDOException $e) {
