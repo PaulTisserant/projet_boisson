@@ -119,9 +119,9 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
         var button = document.getElementById("button");
         var email_input = document.getElementById("email_input");
         var email = document.getElementById("email");
-        var emailReg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
+        var emailReg = new RegExp(/.+\@.+\..+/);
 
-        if (emailReg.test(email_input.value)) {
+        if (!emailReg.test(email_input.value) && email_input.value !== "") {
             if (!email.contains(label_email)) {
                 label_email.textContent = "(Le format de l'adresse email est incorrect)" ;
                 email.appendChild(label_email);
@@ -183,7 +183,7 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
         var tel_input = document.getElementById("tel_input");
         var tel = document.getElementById("tel");
 
-        if ( !/^.{0}$/.test(tel_input.value)  && !/(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}/.test(tel_input.value)) {
+        if ( !/^.{0}$/.test(tel_input.value)  && !/0+[0-9]{9}/.test(tel_input.value)) {
             if (!tel.contains(label_tel)) {
                 label_tel.textContent = "(Le format du numero de telephone est incorrect)" ;
                 tel.appendChild(label_tel);
@@ -282,7 +282,6 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
         handleBlurLogin();
         if(handleBlurNom()==true && handleBlurPrenom()==true && handleBlurEmail()==true && handleBlurTel()==true && handleBlurVille()==true && handleBlurCodePostal()==true && handleBlurMdp()==true && handleBlurLogin()==true ) {
             //Faire un submit
-            alert('submit') ;
             document.getElementById("form_insc").submit('Submit');
         }else{
             alert("Veuillez remplir correctement tous les champs") ;
@@ -346,7 +345,7 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
     </form>
 </div>
 <?php
-include 'bddConnexion.php';
+include_once 'bddConnexion.php';
 // definition des variables
 $prenom = TRUE ;
 $nom = TRUE ;
@@ -464,6 +463,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         //Verification si le login est disponible
         try {
+
             $sql = "SELECT user_id FROM users WHERE login = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$log]);
@@ -475,8 +475,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
-        } finally {
-            $conn = null;
         }
     }
 
@@ -500,6 +498,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
     }
 if(($_SERVER["REQUEST_METHOD"] == "POST")){
+
     if (($prenom==TRUE) && ($nom==TRUE)  && ($email==TRUE)  && $sexe==TRUE  && $ville==TRUE  && $codePostal==TRUE  && $adresse==TRUE  && $naissance==TRUE  && $motDePasse==TRUE  && $login==TRUE  && $telephone==TRUE ){
         $prenom_bdd = isset($_POST['prenom_input']) ? $_POST['prenom_input'] : null;
         $nom_bdd = isset($_POST['nom_input']) ? $_POST['nom_input'] : null;
@@ -512,20 +511,17 @@ if(($_SERVER["REQUEST_METHOD"] == "POST")){
         $motDePasse_bdd = isset($_POST['mdp_input']) ? $_POST['mdp_input'] : null;
         $login_bdd = isset($_POST['login_input']) ? $_POST['login_input'] : null;
         $telephone_bdd = isset($_POST['tel_input']) ? $_POST['tel_input'] : null;
-
         try {
             $hashedPassword = password_hash($motDePasse_bdd, PASSWORD_DEFAULT);
-
             $sql = "INSERT INTO users (login, password, first_name, last_name, gender, email, birthdate, address, postal_code, city, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
+
             $stmt->execute([$login_bdd, $hashedPassword, $nom_bdd, $prenom_bdd, $sexe_bdd, $email_bdd, $naissance_bdd, $adresse_bdd, $codePostal_bdd, $ville_bdd, $telephone_bdd]);
             move_to() ;
             exit();
         } catch (PDOException $e) {
             echo "Erreur !: " . $e->getMessage() . "<br/>";
-            } finally {
-                $conn = null;
-            }
+        } 
 
     }
 }else{

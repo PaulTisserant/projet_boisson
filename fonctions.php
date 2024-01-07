@@ -63,7 +63,7 @@ function verifMail($mail){
 }
 function verifTel($tel){
     if(strlen($tel) > 0 ){
-        if(!preg_match('/(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}/',$tel)){
+        if(!preg_match('/0+[0-9]{9}/',$tel)){
             return false ;
         }
     }

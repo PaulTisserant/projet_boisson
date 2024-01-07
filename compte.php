@@ -669,7 +669,7 @@ include 'bddConnexion.php';
             var button = document.getElementById("button");
             var email_input = document.getElementById("email_input");
             var email = document.getElementById("email");
-            var emailReg = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/i);
+            var emailReg = new RegExp(/.+\@.+\..+/);
 
             if (!emailReg.test(email_input.value)) {
                 if (!email.contains(label_email)) {
@@ -733,7 +733,7 @@ include 'bddConnexion.php';
             var tel_input = document.getElementById("tel_input");
             var tel = document.getElementById("tel");
 
-            if ( !/^.{0}$/.test(tel_input.value)  && !/(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}/.test(tel_input.value)) {
+            if ( !/^.{0}$/.test(tel_input.value)  && !/0+[0-9]{9}/.test(tel_input.value)) {
                 if (!tel.contains(label_tel)) {
                     label_tel.textContent = "(Le format du numero de telephone est incorrect)" ;
                     tel.appendChild(label_tel);

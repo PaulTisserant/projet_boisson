@@ -2,12 +2,10 @@
 include 'bddConnexion.php';
 include_once "fonctions.php" ;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {        
         if(isset($_POST['modifFav'])){
             $id = $_POST['modifFav'];
             changerFav($id) ;
         }
-    }
 }
 
 
@@ -58,6 +56,8 @@ function changerFav($id){
         }
     }else{
         $_SESSION['favorite'] = array() ;
+        array_push($_SESSION['favorite'],$id);
+
     }
  }
  return false ;

@@ -15,7 +15,36 @@
     $password = "";
     $dbname = "boissons";
 
+    function recupererLettres($chaine) {
+        $lettres = preg_replace('/_/', ' ', $chaine);
+        $lettres = preg_replace('/ï/', 'i', $lettres);
 
+        return $lettres;
+    }
+    function enleverExtension($chaine) {
+        $lettres = preg_replace('/\.jpg|\.png/', '', $chaine);
+    
+        return $lettres;
+    }
+    function parcourirRepertoire($chemin) {
+        $fichiers = array() ;
+        if (is_dir($chemin)) {
+            $contenu = scandir($chemin); //liste des fichiers et sous-répertoires
+            foreach ($contenu as $element) {
+                // Exclut les entrées "." et ".." qui représentent le répertoire courant et le répertoire parent
+                if ($element != "." && $element != "..") {
+
+                    $cheminComplet = $chemin . '/' . $element;
+    
+                    // Si c'est un fichier
+                    if (is_file($cheminComplet)) {
+                        array_push($fichiers,$element) ;
+                    }
+                }
+            }
+        return $fichiers;
+        }
+    } 
   // Fonction pour obtenir l'ID d'un aliment dans la table FoodHierarchy
   function getFoodId($foodName, $conn)
   {
@@ -38,9 +67,17 @@
       }
   }
 // fonction verifiant si la recette de la boisson a une image
-function hasImage($recipe){
-    $cheminComplet = "Photos/". $recipe. ".jpg";
-    return file_exists($cheminComplet) && is_file($cheminComplet);
+function hasImage($recipe,$fichiers){
+    $recipe = recupererLettres(strtolower($recipe)) ;
+    foreach ($fichiers as $element) {
+        $element_modif = recupererLettres(enleverExtension(strtolower($element))) ;
+        echo $element_modif . "  <-" . $recipe . "<br>";
+        if (strpos($recipe,$element_modif) == true  || strpos($element_modif,$recipe) == true || $element_modif === $recipe)  {
+            echo "treueeeee <br>";
+            return $element;
+        }
+    }
+return "";
 }
   try {
 
@@ -81,15 +118,16 @@ function hasImage($recipe){
             }
         }
 
-
+        $fichiers = parcourirRepertoire('Photos')  ;
         // Insertion des données des recettes
         foreach ($Recettes as $recipe) {
             $title = $recipe['titre'];
             $ingredients = $recipe['ingredients'];
             $preparation = $recipe['preparation'];
             $index = implode(', ', $recipe['index']); // Concaténez les éléments de l'index
-            if(hasImage($title)){
-                $photo_path = "Photos/". $title. ".jpg";
+            $image = hasImage($title,$fichiers) ;
+            if($image != ""){   
+                $photo_path = "Photos/". $image ;
                 // Insérer la recette avec l'image
                 $sql = "INSERT INTO recipes (title, ingredients, preparation,photo_path, food_index) VALUES (?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
