@@ -280,7 +280,7 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
         var naissance_input = document.getElementById("naissance_input");
         var naissance = document.getElementById("naissance");
         // verifier si la date est au bon format et si elle existe bien et si elle est pas dans le futur
-        if (!/^\d{4}-\d{2}-\d{2}$/.test(naissance_input.value) || !checkDate(naissance_input.value) || naissance_input.value > new Date().toISOString().slice(0, 10)) {
+        if (naissance_input.value > new Date().toISOString().slice(0, 10)) {
             if (!naissance.contains(label_naissance)) {
                 label_naissance.textContent = "(La date de naissance est incorrecte)" ;
                 naissance.appendChild(label_naissance);
@@ -296,11 +296,7 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
             return true;
         }
     }
-    function checkDate(date) {
-        var bits = date.split('-');
-        var d = new Date(bits[0], bits[1] - 1, bits[2]);
-        return d && (d.getMonth() + 1) == bits[1];
-    }
+
     function verifAll() {
         handleBlurNom() ;  
         handleBlurPrenom();  
@@ -482,8 +478,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     //Verif Date Naissance
     if (isset($_POST['naissance_input'])) {
         $date=$_POST['naissance_input'] ;
-        if (!(checkdate(date("m",strtotime($date) ), date("d",strtotime($date) ), date("Y",strtotime($date) )))) {
-          $naissance=FALSE ;
+        //Verification si l'utiliateur a remplis le champ naissance
+        if(strlen($vil) > 0 ){
+            if(!verifVille($vil)){
+                $ville = FALSE ;
+            }
         }
     }
 
