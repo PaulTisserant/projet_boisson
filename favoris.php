@@ -12,11 +12,11 @@
 <h1>Vos favoris :</h1>
 <?php 
 include_once "fonctions.php" ;
+include 'bddConnexion.php';
 if(verifConn()){
 
 
     try {
-        $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $conn->prepare("SELECT * FROM favoriterecipes JOIN recipes USING(recipe_id) WHERE user_id =?");
         $stmt->execute([$_SESSION['user_id']]);
@@ -53,7 +53,6 @@ if(verifConn()){
         if(count($_SESSION['favorite'])){
             // Si il y a au moins un favoris
             try {
-                $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                 $stmt = $conn->prepare("SELECT * FROM recipes WHERE recipe_id = ?");

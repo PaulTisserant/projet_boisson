@@ -47,8 +47,8 @@
             <!-- Liste déroulante des suggestions -->
             <ul id="autocompleteList"></ul>
             <?php 
+                include 'bddConnexion.php';
                 try {
-                    $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                     $stmt = $conn->prepare("SELECT * FROM ingredients");
@@ -98,11 +98,11 @@
         <div class="cardContainer">
 
             <?php
+                include 'bddConnexion.php';
 
             
             
                 try {
-                    $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                     // recherche si la variable search se trouve dans toutes les données d'une recette

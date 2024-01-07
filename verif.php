@@ -1,8 +1,8 @@
 <?php
-        //Verification si le login est disponible
+    include 'bddConnexion.php';
+    //Verification si le login est disponible
     if(isset($_POST['maVariable'])){
         try {
-            $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
             $sql = "SELECT user_id FROM users WHERE login = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$_POST['maVariable']]);

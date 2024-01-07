@@ -21,6 +21,7 @@ exit ;
 session_start();
 
 include "fonctions.php" ;
+include 'bddConnexion.php';
 
 if(verifConn()){
 deconnexion() ;
@@ -345,6 +346,7 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
     </form>
 </div>
 <?php
+include 'bddConnexion.php';
 // definition des variables
 $prenom = TRUE ;
 $nom = TRUE ;
@@ -462,7 +464,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
         //Verification si le login est disponible
         try {
-            $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
             $sql = "SELECT user_id FROM users WHERE login = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$log]);
@@ -513,7 +514,6 @@ if(($_SERVER["REQUEST_METHOD"] == "POST")){
         $telephone_bdd = isset($_POST['tel_input']) ? $_POST['tel_input'] : null;
 
         try {
-            $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
             $hashedPassword = password_hash($motDePasse_bdd, PASSWORD_DEFAULT);
 
             $sql = "INSERT INTO users (login, password, first_name, last_name, gender, email, birthdate, address, postal_code, city, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

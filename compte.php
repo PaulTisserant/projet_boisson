@@ -31,6 +31,8 @@
 <?php 
 session_start();
 include_once "fonctions.php";
+include 'bddConnexion.php';
+
 ?>
 </body>
 
@@ -63,7 +65,6 @@ include_once "fonctions.php";
                 exit() ;
             }
             try {
-                $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
                 $sql = "SELECT * FROM users WHERE login = ? AND user_id =?";
                 $stmt = $conn->prepare($sql);
                 $stmt->execute([$_SESSION['login'], $_SESSION['user_id']]);
@@ -99,7 +100,6 @@ include_once "fonctions.php";
 
         //Si l'utilisateur a cliquer sur le bouton supprimer.
         try {
-            $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
             $sql = "DELETE FROM users WHERE login =? AND user_id =?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$_SESSION['login'], $_SESSION['user_id']]);

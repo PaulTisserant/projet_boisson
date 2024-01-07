@@ -83,10 +83,10 @@ function modifierFav($id){
 
 
     <?php 
-session_start();
+        session_start();
+        include 'bddConnexion.php';
         require_once "fonctions.php";
         try {
-            $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             $stmt = $conn->prepare("SELECT * FROM recipes WHERE recipe_id = :id");

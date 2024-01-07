@@ -61,10 +61,8 @@
         
 
         <?php
+            include 'bddConnexion.php';
             try {
-                $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
-
-                $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
                 $result = null;

@@ -1,4 +1,5 @@
 <?php 
+include 'bddConnexion.php';
 include_once "fonctions.php" ;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {        

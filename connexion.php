@@ -11,6 +11,7 @@
 <body>
     <?php 
     include "fonctions.php";
+    include 'bddConnexion.php';
 
     $sub = true ;
     session_start();
@@ -25,7 +26,6 @@
             $log = $_POST['login'] ;
             $mdp = $_POST['mdp'] ;
             try {
-                $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
                 $sql = "SELECT user_id, password FROM users WHERE login = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->execute([$log]);
