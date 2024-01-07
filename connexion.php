@@ -11,6 +11,7 @@
 <body>
     <?php 
     include "fonctions.php";
+
     $sub = true ;
     session_start();
 
@@ -19,29 +20,29 @@
         header('Location: compte.php');
         exit() ;
     }else{
-        if($_SERVER["REQUEST_METHOD"] == "POST"){
-            if ( isset($_POST['mdp']) && isset($_POST['login'])) {
-                $sub = false ;
-                $log = $_POST['login'] ;
-                $mdp = $_POST['mdp'] ;
-                try {
-                    $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
-                    $sql = "SELECT user_id FROM users WHERE login = ? AND password =?";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->execute([$log,$mdp]);
-                    // Si une ligne est retournée, le login existe
-                    if ($stmt->rowCount() > 0) {
-                        $sub = true ;
-                        $_SESSION['user_id'] = $stmt->fetchColumn();
-                        $_SESSION['login'] =  $log ;
-                        header('Location: compte.php');
-                        exit() ;
-                    }
-                } catch (PDOException $e) {
-                    echo "Erreur : " . $e->getMessage();
-                } finally {
-                    $conn = null;
+        if ( isset($_POST['mdp']) && isset($_POST['login'])) {
+            $sub = false ;
+            $log = $_POST['login'] ;
+            $mdp = $_POST['mdp'] ;
+            try {
+                $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
+                $sql = "SELECT user_id, password FROM users WHERE login = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute([$log]);
+                $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+                if ($userData && password_verify($mdp, $userData['password'])) {
+                    echo "connect" ;
+                    $sub = true ;
+                    $_SESSION['user_id'] = $userData['user_id'];
+                    $_SESSION['login'] =  $log ;
+                    header('Location: compte.php');
+                    exit() ;
                 }
+            } catch (PDOException $e) {
+                echo "Erreur : " . $e->getMessage();
+            } finally {
+                $conn = null;
             }
         }
     }   

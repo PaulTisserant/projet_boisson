@@ -514,9 +514,11 @@ if(($_SERVER["REQUEST_METHOD"] == "POST")){
 
         try {
             $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
+            $hashedPassword = password_hash($motDePasse_bdd, PASSWORD_DEFAULT);
+
             $sql = "INSERT INTO users (login, password, first_name, last_name, gender, email, birthdate, address, postal_code, city, phone_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->execute([$login_bdd, $motDePasse_bdd, $nom_bdd, $prenom_bdd, $sexe_bdd, $email_bdd, $naissance_bdd, $adresse_bdd, $codePostal_bdd, $ville_bdd, $telephone_bdd]);
+            $stmt->execute([$login_bdd, $hashedPassword, $nom_bdd, $prenom_bdd, $sexe_bdd, $email_bdd, $naissance_bdd, $adresse_bdd, $codePostal_bdd, $ville_bdd, $telephone_bdd]);
             move_to() ;
             exit();
         } catch (PDOException $e) {
@@ -527,7 +529,7 @@ if(($_SERVER["REQUEST_METHOD"] == "POST")){
 
     }
 }else{
-    echo "<h1>Erreur</h1>";
+    //echo "<h1>Erreur</h1>";
 }
 
 ?>

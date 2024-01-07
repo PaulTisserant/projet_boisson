@@ -5,40 +5,6 @@ body {
     background-color: #f2f2f2;
 }
 
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #918e8e;
-    padding: 10px;
-    margin-bottom: 20px;
-}
-
-nav a {
-    text-decoration: none;
-    color: #000;
-    font-weight: bold;
-}
-
-nav ul {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    list-style: none;
-}
-
-nav ul li {
-    margin-right: 20px;
-}
-
-
-nav ul li a:hover {
-    color: #ab3333;
-}
-
-nav ul li a.active {
-    color: #ab3333;
-}
 
 .cardContainer {
     display: flex;
@@ -114,6 +80,20 @@ a {
     color: #ab3333;
 }
 
+button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ab3333;
+    color: #fff;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #fff;
+    color: #ab3333;
+}
+
 .selector {
     padding: 10px;
     border: 1px solid #ccc;
@@ -130,6 +110,13 @@ a {
     margin: 20px;
 }
 
+#ingredientsListContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 
 #ingredientsList {
     display: flex;
@@ -141,7 +128,6 @@ a {
     border-radius: 5px;
     width: 700px;
     list-style: none;
-    direction: rtl;
 }
 
 
@@ -158,4 +144,11 @@ a {
 #ingredientsList li p {
     float: left;
     margin: 0;
+}
+
+
+.container {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }

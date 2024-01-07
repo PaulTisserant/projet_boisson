@@ -243,16 +243,20 @@ function ModifierLogin($login){
         echo "Connexion impossible";
     }
 }
-function ModifierMdp($mdp){
-    if(verifConn()){
+function ModifierMdp($mdp) {
+    if (verifConn()) {
         try {
             $conn = new PDO('mysql:host=localhost;dbname=boissons', "root", "");
+            
+            // Utilisez password_hash pour hasher le mot de passe
+            $hash = password_hash($mdp, PASSWORD_DEFAULT);
+
             // Préparer la requête SQL UPDATE
             $sql = "UPDATE users SET password = ? WHERE user_id = ?";
             $stmt = $conn->prepare($sql);
         
-            // Exécuter la requête
-            $stmt->execute([$mdp,$_SESSION['user_id']]);
+            // Exécuter la requête avec le mot de passe hashé
+            $stmt->execute([$hash, $_SESSION['user_id']]);
 
             // Vérifier si la mise à jour a réussi
             if ($stmt->rowCount() > 0) {
@@ -265,7 +269,7 @@ function ModifierMdp($mdp){
         } finally {
             $conn = null;
         }
-    }{
+    } else {
         echo "Connexion impossible";
     }
 }
