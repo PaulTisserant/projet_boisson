@@ -43,9 +43,7 @@ include 'bddConnexion.php';
 
 <div class="conteneur" > 
     <h1>Information Utilisateur</h1>
-    <form method="post" action="#">
-        <input type="submit" name="deconnexion" value="Déconnexion" class="deco">
-    </form>
+
 
 
     <?php 
@@ -71,7 +69,6 @@ include 'bddConnexion.php';
                 // Si une ligne est retournée, le login existe
                 if ($stmt->rowCount() > 0) {
                     $userData = $stmt->fetch(PDO::FETCH_ASSOC);
-                    // Stockez les données dans des variables individuelles
                     $login = $userData['login'];
                     $password = $userData['password'];
                     $first_name = $userData['first_name'];
@@ -117,7 +114,6 @@ include 'bddConnexion.php';
 
 
 
-    $pass = afficherMotDePasse($password) ;
     echo "
     <table>
     <tr>
@@ -203,16 +199,27 @@ include 'bddConnexion.php';
 
     <tr> 
         <td>
-        <p> Mot de passe : <span class='info'>$pass </span>  </p> 
+        <p> Mot de passe : <span class='info'>********** </span>  </p> 
         </td>
         <td class='butCell'>
         <button class='but' onclick=\"afficherCadre('mdp')\">Modifier Mot De Passe</button>  
         </td>
     </tr>
+    <tr> 
+        <td> 
+            <form method='post' action='#'>
+                <input type='submit' name='supprimer' value='Supprimer le compte' class='but'>
+            </form>
+        </td>
+    <td> 
+        <form method='post' action='#'>
+            <input type='submit' name='deconnexion' value='Déconnexion' class='but'>
+        </form>    
+    </td>
+    </tr>
     </table>
-    <form method='post' action='#'>
-        <input type='submit' name='supprimer' value='Supprimer le compte'>
-    </form>
+
+
     </td>
     <td  class = 'mod' id = 'mod'>
     </td>
@@ -469,12 +476,10 @@ include 'bddConnexion.php';
                     };
                 break;
                 case "mdp":
-                    // Créer le champ d'entrée (input)
                     var input = document.createElement('input'); 
                     input.setAttribute('type', 'password');
                     input.setAttribute('id', input_name);
                     input.setAttribute('name', input_name);
-                    // Créer le bouton
                     var bouton = document.createElement('button');
                     bouton.setAttribute('class', 'but')
                     bouton.textContent = 'Valider';
@@ -532,13 +537,10 @@ include 'bddConnexion.php';
                 }
             }else{
                 var input_name =  champ + "_input" ; 
-                // Récupérer la valeur du champ d'entrée
                 var nouvelleVal = document.getElementById(input_name).value;
             }   
-            // Créer une instance de l'objet XMLHttpRequest
             var xhr = new XMLHttpRequest();
 
-            // Définir la fonction de rappel pour gérer la réponse
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log(xhr.responseText);
@@ -546,7 +548,6 @@ include 'bddConnexion.php';
                 }
             };
 
-            // Ouvrir une requête POST vers le fichier PHP avec la fonction à appeler
             xhr.open("POST", "modificationBdd.php", true);
 
             // Définir l'en-tête de la requête pour indiquer que c'est une requête POST
@@ -558,17 +559,14 @@ include 'bddConnexion.php';
 
 
 
-            // Cacher le cadre après validation (vous pouvez ajuster cette logique)
             document.querySelector('.cadre').remove();
         
         }
 
 
         function changerCivil(){
-            // Créer une instance de l'objet XMLHttpRequest
             var xhr = new XMLHttpRequest();
 
-            // Définir la fonction de rappel pour gérer la réponse
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     //

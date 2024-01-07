@@ -31,8 +31,6 @@
         if (is_dir($chemin)) {
             $contenu = scandir($chemin); //liste des fichiers et sous-répertoires
             foreach ($contenu as $element) {
-                // Exclut les entrées "." et ".." qui représentent le répertoire courant et le répertoire parent
-                if ($element != "." && $element != "..") {
 
                     $cheminComplet = $chemin . '/' . $element;
     
@@ -40,7 +38,7 @@
                     if (is_file($cheminComplet)) {
                         array_push($fichiers,$element) ;
                     }
-                }
+                
             }
         return $fichiers;
         }

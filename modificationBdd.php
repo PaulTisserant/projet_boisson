@@ -23,9 +23,7 @@ function ModifierSexe($sexe){
             }
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
-        } finally {
-            $conn = null;
-        }
+        } 
 
     }
 
@@ -50,10 +48,8 @@ function ModifierNom($nom){
             }
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
-        } finally {
-            $conn = null;
-        }
-    }{
+        } 
+    }else{
         echo "Connexion impossible";
     }
 
@@ -78,10 +74,8 @@ function ModifierPrenom($prenom){
             }
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
-        } finally {
-            $conn = null;
-        }
-    }{
+        } 
+    }else{
         echo "Connexion impossible";
     }
 }
@@ -104,10 +98,8 @@ function ModifierEmail($email){
             }
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
-        } finally {
-            $conn = null;
-        }
-    }{
+        } 
+    }else{
         echo "Connexion impossible";
     }
 }
@@ -130,10 +122,8 @@ function ModifierTel($tel){
             }
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
-        } finally {
-            $conn = null;
-        }
-    }{
+        } 
+    }else{
         echo "Connexion impossible";
     }
 }
@@ -157,10 +147,8 @@ function ModifierVille($ville){
             }
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
-        } finally {
-            $conn = null;
-        }
-    }{
+        } 
+    }else{
         echo "Connexion impossible";
     }
 }
@@ -183,10 +171,8 @@ function ModifierCodePostal($codePostal){
             }
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
-        } finally {
-            $conn = null;
-        }
-    }{
+        } 
+    }else{
         echo "Connexion impossible";
     }
 }
@@ -209,9 +195,7 @@ function ModifierAdresse($adresse){
             }
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
-        } finally {
-            $conn = null;
-        }
+        } 
     }{
         echo "Connexion impossible";
     }
@@ -236,10 +220,8 @@ function ModifierLogin($login){
             }
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
-        } finally {
-            $conn = null;
-        }
-    }{
+        } 
+    }else{
         echo "Connexion impossible";
     }
 }
@@ -266,9 +248,7 @@ function ModifierMdp($mdp) {
             }
         } catch (PDOException $e) {
             echo "Erreur : " . $e->getMessage();
-        } finally {
-            $conn = null;
-        }
+        } 
     } else {
         echo "Connexion impossible";
     }

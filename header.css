@@ -12,23 +12,14 @@ header {
     justify-content: space-between;
     align-items: center;
 }
-nav a {
-    text-decoration: none;
-padding-left: 60px;
-}
+
 .headRight{
     display: flex;
     align-items: center;
     padding-right: 50px;
 }
 
-nav ul {
-    display: flex;
-    align-items: center;
-    list-style: none;
-    text-decoration: none;
 
-}
 
 .upscale:hover {
     transform: scale(1.2);

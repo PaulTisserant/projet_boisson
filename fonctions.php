@@ -123,7 +123,7 @@ function isFavorite($id){
             $sql = "SELECT * FROM favoriterecipes WHERE recipe_id = ? AND user_id = ?";
             $stmt = $conn->prepare($sql);
             $stmt->execute([$id,$_SESSION['user_id']]);
-            // Si une ligne est retournée, le login existe
+            // Si une ligne est retournée, le favoris existe
             if ($stmt->rowCount() > 0) {
                 return true;
             }else{

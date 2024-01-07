@@ -205,7 +205,7 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
 
         $.ajax({
         type: "POST",
-        url: "verif.php",  // Assurez-vous de spécifier le chemin correct vers votre script PHP
+        url: "verif.php",  
         data: { 
             maVariable: login_input.value 
         },        success: function(response) {
@@ -524,8 +524,6 @@ if(($_SERVER["REQUEST_METHOD"] == "POST")){
         } 
 
     }
-}else{
-    //echo "<h1>Erreur</h1>";
 }
 
 ?>
