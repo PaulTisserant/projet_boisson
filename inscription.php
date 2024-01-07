@@ -70,6 +70,11 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
         label_mdp.style.fontSize = "10px" ;
         label_mdp.style.color = "red" ;
 
+        label_naissance = document.createElement("label");
+        label_naissance.textContent = "(Erreur Le nom est obligatoire)" ;
+        label_naissance.style.fontSize = "10px" ;
+        label_naissance.style.color = "red" ;
+
     function handleBlurNom() {
 
     var button = document.getElementById("button");
@@ -271,6 +276,31 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
         }
 
     }
+    function handleBlurDateNaissance() {
+        var naissance_input = document.getElementById("naissance_input");
+        var naissance = document.getElementById("naissance");
+        // verifier si la date est au bon format et si elle existe bien et si elle est pas dans le futur
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(naissance_input.value) || !checkDate(naissance_input.value) || naissance_input.value > new Date().toISOString().slice(0, 10)) {
+            if (!naissance.contains(label_naissance)) {
+                label_naissance.textContent = "(La date de naissance est incorrecte)" ;
+                naissance.appendChild(label_naissance);
+            }
+            console.log("error naissance");
+            naissance.style.color = "red";
+            return false;
+        } else {
+            if (naissance.contains(label_naissance)) {
+                naissance.removeChild(label_naissance);
+            }
+            naissance.style.color = "black";
+            return true;
+        }
+    }
+    function checkDate(date) {
+        var bits = date.split('-');
+        var d = new Date(bits[0], bits[1] - 1, bits[2]);
+        return d && (d.getMonth() + 1) == bits[1];
+    }
     function verifAll() {
         handleBlurNom() ;  
         handleBlurPrenom();  
@@ -280,7 +310,8 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
         handleBlurCodePostal();
         handleBlurMdp();
         handleBlurLogin();
-        if(handleBlurNom()==true && handleBlurPrenom()==true && handleBlurEmail()==true && handleBlurTel()==true && handleBlurVille()==true && handleBlurCodePostal()==true && handleBlurMdp()==true && handleBlurLogin()==true ) {
+        handleBlurDateNaissance();
+        if(handleBlurNom()==true && handleBlurPrenom()==true && handleBlurEmail()==true && handleBlurTel()==true && handleBlurVille()==true && handleBlurCodePostal()==true && handleBlurMdp()==true && handleBlurLogin()==true && handleBlurDateNaissance()==true ) {
             //Faire un submit
             document.getElementById("form_insc").submit('Submit');
         }else{
@@ -311,6 +342,9 @@ echo "<script>alert('Deconnexion reussis');</script>" ;
     <br>
     <input type="radio" name="sexe" value="F">Femme
     <input type="radio" name="sexe" value="H">Homme  
+    <br>
+    <label id="naissance" >Date de naissance :</label>
+    <input name="naissance_input" id ="naissance_input" type="date" onblur="handleBlurDateNaissance()" >
     <br>
     <label id="email" >Email :</label>
     <input name ="email_input" id ="email_input" type="email" onblur="handleBlurEmail()" >
@@ -358,6 +392,7 @@ $naissance = TRUE ;
 $motDePasse = TRUE ;
 $login = TRUE ;
 $telephone = TRUE ;
+$dateNaissance = TRUE ;
 $mdp_SizeError = FALSE ;
 $login_SizeError = FALSE ;
 $login_ExistError = FALSE ;
@@ -445,8 +480,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     }
     //Verif Date Naissance
-    if (isset($_POST['naissance'])) {
-        $date=$_POST['naissance'] ;
+    if (isset($_POST['naissance_input'])) {
+        $date=$_POST['naissance_input'] ;
         if (!(checkdate(date("m",strtotime($date) ), date("d",strtotime($date) ), date("Y",strtotime($date) )))) {
           $naissance=FALSE ;
         }
